@@ -1,0 +1,360 @@
+[Vol]
+type = rot
+rottype = generic
+messagetype = undef
+rotid = 0
+value = 84
+
+[Tempo]
+type = rot
+rottype = generic
+messagetype = undef
+rotid = 1
+value = 59
+
+[A]
+type = rot
+rottype = envrot
+messagetype = undef
+rotid = 0
+value = 21
+
+[D]
+type = rot
+rottype = envrot
+messagetype = undef
+rotid = 1
+value = 19
+
+[S]
+type = rot
+rottype = envrot
+messagetype = undef
+rotid = 2
+value = 99
+
+[R]
+type = rot
+rottype = envrot
+messagetype = undef
+rotid = 3
+value = 82
+
+[fc]
+type = rot
+rottype = filterrot
+messagetype = undef
+rotid = 0
+value = 81
+
+[Q]
+type = rot
+rottype = filterrot
+messagetype = undef
+rotid = 1
+value = 8.46
+
+[EG Amount]
+type = rot
+rottype = filterrot
+messagetype = undef
+rotid = 2
+value = 122
+
+[A filter]
+type = rot
+rottype = filterrot
+messagetype = undef
+rotid = 3
+value = 31
+
+[D filter]
+type = rot
+rottype = filterrot
+messagetype = undef
+rotid = 4
+value = 109
+
+[level0]
+type = rot
+rottype = vcorot
+messagetype = level
+rotid = 6
+id = 0
+value = 84
+
+[level2]
+type = rot
+rottype = vcorot
+messagetype = level
+rotid = 8
+id = 2
+value = 73
+
+[level3]
+type = rot
+rottype = vcorot
+messagetype = level
+rotid = 9
+id = 3
+value = 93
+
+[level1]
+type = rot
+rottype = vcorot
+messagetype = level
+rotid = 7
+id = 1
+value = 123
+
+[level4]
+type = rot
+rottype = vcorot
+messagetype = level
+rotid = 10
+id = 4
+value = 117
+
+[level5]
+type = rot
+rottype = vcorot
+messagetype = level
+rotid = 11
+id = 5
+value = 112
+
+[assign10]
+seqid = 1
+id = 0
+voiceid = 0
+state = 0
+type = button
+buttontype = vcobutton
+
+[assign11]
+seqid = 1
+id = 1
+voiceid = 2
+state = 0
+type = button
+buttontype = vcobutton
+
+[assign23]
+seqid = 2
+id = 3
+voiceid = 1
+state = 0
+type = button
+buttontype = vcobutton
+
+[assign25]
+seqid = 2
+id = 5
+voiceid = 5
+state = 0
+type = button
+buttontype = vcobutton
+
+[Vco1]
+type = rot
+rottype = vcorot
+messagetype = vco
+rotid = 0
+vcoid = 1
+voiceid = 1
+value = 120
+
+[Vco2]
+type = rot
+rottype = vcorot
+messagetype = vco
+rotid = 1
+vcoid = 2
+voiceid = 2
+value = 88
+
+[Sub12]
+type = rot
+rottype = vcorot
+messagetype = sub
+rotid = 2
+voiceid = 2
+value = 5
+
+[Sub23]
+type = rot
+rottype = vcorot
+messagetype = sub
+rotid = 3
+voiceid = 3
+value = 4
+
+[Sub24]
+type = rot
+rottype = vcorot
+messagetype = sub
+rotid = 4
+voiceid = 4
+value = 5
+
+[Sub25]
+type = rot
+rottype = vcorot
+messagetype = sub
+rotid = 5
+voiceid = 5
+value = 4
+
+[Clk4]
+type = rot
+rottype = rythmrot
+messagetype = clk
+rotid = 11
+clkid = 4
+value = 13
+
+[Clk1]
+type = rot
+rottype = rythmrot
+messagetype = clk
+rotid = 8
+clkid = 1
+value = 2
+
+[Clk2]
+type = rot
+rottype = rythmrot
+messagetype = clk
+rotid = 9
+clkid = 2
+value = 3
+
+[Clk3]
+type = rot
+rottype = rythmrot
+messagetype = clk
+rotid = 10
+clkid = 3
+value = 7
+
+[callbackClk11]
+buttonid = 0
+clkid = 1
+seqid = 1
+state = 0
+type = button
+buttontype = rythmbutton
+
+[callbackClk12]
+buttonid = 2
+clkid = 2
+seqid = 1
+state = 0
+type = button
+buttontype = rythmbutton
+
+[callbackClk22]
+buttonid = 3
+clkid = 2
+seqid = 2
+state = 0
+type = button
+buttontype = rythmbutton
+
+[callbackClk14]
+buttonid = 6
+clkid = 4
+seqid = 1
+state = 0
+type = button
+buttontype = rythmbutton
+
+[callbackClk23]
+buttonid = 5
+clkid = 3
+seqid = 2
+state = 0
+type = button
+buttontype = rythmbutton
+
+[Step12]
+type = rot
+rottype = rythmrot
+messagetype = step
+rotid = 4
+stepid = 1
+seqid = 2
+value = 3
+
+[Step22]
+type = rot
+rottype = rythmrot
+messagetype = step
+rotid = 5
+stepid = 2
+seqid = 2
+value = 5
+
+[Step32]
+type = rot
+rottype = rythmrot
+messagetype = step
+rotid = 6
+stepid = 3
+seqid = 2
+value = 4
+
+[Step42]
+type = rot
+rottype = rythmrot
+messagetype = step
+rotid = 7
+stepid = 4
+seqid = 2
+value = 5
+
+[Step41]
+type = rot
+rottype = rythmrot
+messagetype = step
+rotid = 3
+stepid = 4
+seqid = 1
+value = 3
+
+[Step31]
+type = rot
+rottype = rythmrot
+messagetype = step
+rotid = 2
+stepid = 3
+seqid = 1
+value = 5
+
+[Step21]
+type = rot
+rottype = rythmrot
+messagetype = step
+rotid = 1
+stepid = 2
+seqid = 1
+value = 7
+
+[Step11]
+type = rot
+rottype = rythmrot
+messagetype = step
+rotid = 0
+stepid = 1
+seqid = 1
+value = 10
+
+[wave]
+id = 0
+v0 = 0
+v1 = 2
+v2 = 3
+wave = sqr
+buttontype = wavebutton
+type = button
+
