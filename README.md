@@ -24,7 +24,7 @@ Run main.py in your terminal
 * All parameters are saved in the file "State/state.sharm" when the window is closed.
 * You can change the value of knobs using your mouse.
 * You can also click on the title or the value of the knob and use arrow keys to change the value.
-* On knobs controlling volume, you can press m to mute them.
+* On knobs controlling volume, you can press m to mute and unmute them.
 * When a knob is selected, its value is colored in red, press q to deselect it.
 
 ### Improvements to come:
