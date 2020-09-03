@@ -38,7 +38,7 @@ class WaveSelect:
 		self.coordsButton = [0, 0, 0, 0]
 		self.button = self.canvas.create_rectangle(self.coordsButton, fill='black', outline='black')
 
-		self.stateList = ['tri', 'sqr', 'sine']
+		self.stateList = ['tri', 'sqr', 'saw']
 
 		self.redrawState()
 

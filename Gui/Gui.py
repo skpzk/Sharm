@@ -43,7 +43,7 @@ class Gui:
 		self.root.update()  # Otherwise the winfo method only returns '1'
 		# print(root.winfo_width())
 
-		self.createMenuBar()
+		# self.createMenuBar()  # useless for now, may be added in a future version
 
 		self.offset_y = self.root.winfo_height() - self.width - self.border - 20
 		self.offset_x = int(self.root.winfo_width() / 6) - self.width - self.border
