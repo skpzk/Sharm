@@ -211,7 +211,7 @@ rottype = rythmrot
 messagetype = clk
 rotid = 11
 clkid = 4
-value = 13
+value = 11
 
 [Clk1]
 type = rot
@@ -235,7 +235,7 @@ rottype = rythmrot
 messagetype = clk
 rotid = 10
 clkid = 3
-value = 7
+value = 1
 
 [callbackClk11]
 buttonid = 0

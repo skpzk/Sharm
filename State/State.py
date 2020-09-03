@@ -1,6 +1,7 @@
 import configparser
 import multiprocessing
 from Gui import Gui
+from os.path import join
 
 events = multiprocessing.Queue(maxsize=100)
 
@@ -46,10 +47,12 @@ class State:
 		sharm.audio.stateFinished = True
 
 	def read(self):
-		self.state.read('State/state.sharm')
+		path = join("State", "state.sharm")
+		self.state.read(path)
 
 	def save(self):
-		with open('State/state.sharm', 'w') as f:
+		path = join("State", "state.sharm")
+		with open(path, 'w') as f:
 			self.state.write(f)
 
 	def apply(self):
