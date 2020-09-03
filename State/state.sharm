@@ -10,7 +10,7 @@ type = rot
 rottype = generic
 messagetype = undef
 rotid = 1
-value = 59
+value = 47
 
 [A]
 type = rot
@@ -38,42 +38,42 @@ type = rot
 rottype = envrot
 messagetype = undef
 rotid = 3
-value = 82
+value = 108
 
 [fc]
 type = rot
 rottype = filterrot
 messagetype = undef
 rotid = 0
-value = 81
+value = 70
 
 [Q]
 type = rot
 rottype = filterrot
 messagetype = undef
 rotid = 1
-value = 8.46
+value = 4.935
 
 [EG Amount]
 type = rot
 rottype = filterrot
 messagetype = undef
 rotid = 2
-value = 122
+value = 40
 
 [A filter]
 type = rot
 rottype = filterrot
 messagetype = undef
 rotid = 3
-value = 31
+value = 119
 
 [D filter]
 type = rot
 rottype = filterrot
 messagetype = undef
 rotid = 4
-value = 109
+value = 125
 
 [level0]
 type = rot
