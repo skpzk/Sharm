@@ -39,6 +39,7 @@ class WaveSelect:
 		self.button = self.canvas.create_rectangle(self.coordsButton, fill='black', outline='black')
 
 		self.stateList = ['tri', 'sqr', 'saw']
+		self.eventName = 'wave' + str(self.ID)
 
 		self.redrawState()
 
@@ -110,14 +111,14 @@ class WaveSelect:
 		# cprint("Here")
 		self.state = np.mod(self.state + i, self.nbPositions)
 		self.dictToSend['wave'] = self.stateList[self.state]
-		State.events.put(State.Event('wave', self.dictToSend))
+		State.events.put(State.Event(self.eventName, self.dictToSend))
 		# cprint("State = ", self.state)
 		self.redrawState()
 
 	def buttonRelease(self, posn):
 		if not self.inMotion:
 			i = self.findCenter(posn)
-			if not isinstance(i, list):
+			if i:
 				self.updateState(1)
 		self.inMotion = False
 		self.cursorOnState = False
@@ -158,38 +159,8 @@ class WaveSelect:
 		self.canvas.bind("<B1-Motion>", self.motion)
 		self.canvas.bind("<ButtonRelease-1>", self.buttonRelease)
 
-
-class MainFrame:
-	def __init__(self, root):
-		self.root = root
-		self.initRoot()
-		self.back = tk.Frame(master=self.root)
-		# self.root.update()
-		self.initBack()
-
-		widthCanvas = 400
-		heightCanvas = 600
-
-		self.canvas = tk.Canvas(root)
-		self.canvas.config(width=widthCanvas, height=heightCanvas, borderwidth=0, highlightthickness=0, bg="white")
-		self.canvas.place(x=200, y=0)
-
-		button = WaveSelect(self.canvas, 8, [150, 100], 1, 0)
-
-	def initRoot(self):
-		self.root.title('Patchbay')
-		self.root.geometry("800x600")
-
-	def initBack(self):
-		self.back.pack_propagate(0)
-		self.back.pack(fill=tk.BOTH, expand=1)
-		self.back.bind("<KeyPress-q>", self.quit_root)
-		self.back.bind("<Destroy>", self.quit_root)
-
-		self.back.focus_set()
-
-	def quit_root(self, _):
-		self.root.quit()
+	def toggle(self, wave):
+		self.updateState(self.stateList.index(wave))
 
 
 class RythmButton:
@@ -329,7 +300,8 @@ class Rotary:
 		self.r = (coord[2] - coord[0]) / 2
 		self.center = (coord[0] + coord[2]) / 2, (coord[1] + coord[3]) / 2
 		self.centerAbs = (position[0] + self.center[0], position[1] + self.center[1])
-		self.arc = self.canvas.create_arc(coord, start=self.arc_start, extent=self.arc_extent, fill="", style='arc', width=2)#self.linewidth)
+		self.arc = self.canvas.create_arc(coord, start=self.arc_start, extent=self.arc_extent,
+		                                  fill="", style='arc', width=2)
 		self.coord_line = 2 * self.center
 		self.line = self.canvas.create_line(self.coord_line, width=self.linewidth, capstyle='round')
 		self.titleLabel = self.canvas.create_text(self.center[0], coord[3]+5, text=title)

@@ -64,6 +64,7 @@ class Gui:
 
 		self.vcoRots = []
 		self.vcoButtons = []
+		self.waveButtons = []
 
 		self.filterRots = []
 		self.envRots = []
@@ -147,7 +148,6 @@ class Gui:
 				width = 45
 				height = 20
 
-				# position = [offset_x + i * distanceX, distanceY * gridY + j * (height + 3) + 12]
 				position = [self.rythmRots[i].centerAbs[0] - width/2,
 				            self.rythmRots[-1].centerAbs[1] + distanceY/2 + j * (height + 3) + 8]
 
@@ -156,15 +156,13 @@ class Gui:
 				self.rythmButtons.append(RythmButton(self.back, width, height, position, seqID, i+1))
 				self.rythmButtons[-1].button.config(command=partial(self.rythmButtonAction, i * 2 + j))
 
-		# DrawUtils.drawCross(tk.Canvas(self.back, width=800, height=600), pos)
-
 		over = 5
 
-		self.createRhythmTitleSection(width + 2*over, offset_x-over, offset_y, 'Sequencer 1')
-		self.createRhythmTitleSection(width + 2*over, offset_x-over, offset_y + distanceY, 'Sequencer 2')
-		self.createRhythmTitleSection(width + 2*over, offset_x-over, offset_y + 2*distanceY, 'Rhythm')
+		self.createRhythmTitleSection(width + 2*over, offset_y, 'Sequencer 1')
+		self.createRhythmTitleSection(width + 2*over, offset_y + distanceY, 'Sequencer 2')
+		self.createRhythmTitleSection(width + 2*over, offset_y + 2*distanceY, 'Rhythm')
 
-	def createRhythmTitleSection(self, width, offset_x, offset_y, title):
+	def createRhythmTitleSection(self, width, offset_y, title):
 		sectionWidth = (self.rythmRots[-1].centerAbs[0] + width / 2) - (self.rythmRots[0].centerAbs[0] - width / 2)
 		titleheight = 20
 		titleX = (self.rythmRots[0].centerAbs[0] - width / 2)
@@ -225,9 +223,6 @@ class Gui:
 			self.vcoRots[-1].param = title
 
 	def createVcoSection(self):
-		gridX = 4
-		gridY = 3
-
 		offset_x = 280
 		offset_y = 40
 
@@ -269,7 +264,7 @@ class Gui:
 		buttonDistanceY = 50
 		buttonCanvasWidth = 6 * buttonWidth + 8 * buttonSpaceX + mainSpaceX
 
-		vcoSectionWidth = 4*distanceX + mainSpaceX
+		# vcoSectionWidth = 4*distanceX + mainSpaceX
 
 		canvasX = np.mean([self.vcoRots[0].centerAbs[0], self.vcoRots[1].centerAbs[0]]) - buttonCanvasWidth/2
 		canvasY = y0 + distanceYMain + distanceY + 20
@@ -298,7 +293,8 @@ class Gui:
 
 		for i in range(8, 12):
 			ID = i
-			pos = (offset_x + (i-8) * distanceX + (distanceX - width) / 2 + (i > 9)*mainSpaceX, y0 + distanceY + 2 * distanceYMain + buttonDistanceY)
+			pos = (offset_x + (i-8) * distanceX + (distanceX - width) / 2 + (i > 9)*mainSpaceX,
+			       y0 + distanceY + 2 * distanceYMain + buttonDistanceY)
 			self.createVcoRot(width, pos, ID, titles)
 
 		# create the titles for the vco section
@@ -334,8 +330,8 @@ class Gui:
 		waveCanvas2 = tk.Canvas(self.back, width=waveCanvasW, height=waveCanvasH, highlightthickness=0, bg='white')
 		waveCanvas2.place(x=waveCanvas2X, y=waveCanvas1Y)
 
-		wave1 = WaveSelect(waveCanvas1, waveSelectW, [waveSelectW, 0], 1, 0)
-		wave2 = WaveSelect(waveCanvas2, waveSelectW, [0, 0], -1, 1)
+		self.waveButtons.append(WaveSelect(waveCanvas1, waveSelectW, [waveSelectW, 0], 1, 0))
+		self.waveButtons.append(WaveSelect(waveCanvas2, waveSelectW, [0, 0], -1, 1))
 
 	def createVcoTitleSection(self, width, rotID, offset_y, title):
 		sectionWidth = width
@@ -369,7 +365,8 @@ class Gui:
 
 		if title == 'Q':
 			self.filterRots[-1].valueMax = 1000
-			self.filterRots[-1].valuesTablePrompt = [i * 15. / self.filterRots[-1].valueMax for i in range(self.filterRots[-1].valueMax)]
+			self.filterRots[-1].valuesTablePrompt = [i * 15. / self.filterRots[-1].valueMax
+			                                         for i in range(self.filterRots[-1].valueMax)]
 			# self.r[-1].valuesTablePrompt = np.arange(10)
 			self.filterRots[-1].param = title
 			title = 'Reso'
@@ -379,7 +376,8 @@ class Gui:
 			# debug : commenting these three lines
 
 			# self.filterRots[-1].valueMax = 12700
-			# self.filterRots[-1].valuesTablePrompt = [i * 127 / self.filterRots[-1].valueMax for i in range(self.filterRots[-1].valueMax)]
+			# self.filterRots[-1].valuesTablePrompt = [i * 127 / self.filterRots[-1].valueMax
+			# for i in range(self.filterRots[-1].valueMax)]
 			# self.filterRots[-1].valuesTableSend = self.filterRots[-1].valuesTablePrompt
 
 			self.filterRots[-1].param = title
@@ -407,8 +405,6 @@ class Gui:
 		distanceX = 60
 		distanceY = 70
 		distanceXMain = 80
-
-		mainSpaceX = 10
 
 		titles = ['fc', 'Q', 'EG Amount']
 		titles.extend(['A filter', 'D filter'])
@@ -476,7 +472,7 @@ class Gui:
 		offset_y = 430
 
 		width = 40
-		widthMain = 60
+		# widthMain = 60
 
 		distanceX = 60
 		distanceY = 70
@@ -484,8 +480,8 @@ class Gui:
 		titles = ['A', 'D']
 		titles.extend(['S', 'R'])
 
-		x0 = offset_x
-		y0 = offset_y + distanceY - (distanceY - width)/2 - widthMain/2
+		# x0 = offset_x
+		# y0 = offset_y + distanceY - (distanceY - width)/2 - widthMain/2
 
 		for i in range(2):
 			for j in range(2):
@@ -686,19 +682,19 @@ class Gui:
 		elif message.param == 'quit':
 			self.quit_root()
 		else:
-			self.applyToGui(message.value, message.param)
+			self.applyToGui(message.value)
 
-	def applyToGui(self, valuesDict, key):
+	def applyToGui(self, valuesDict):
 		if 'value' in valuesDict.keys():
 			value = valuesDict['value']
 		else:
 			value = None
 		if valuesDict['type'] != 'rot':
-			self.applyToGuiButton(valuesDict, value, key)
+			self.applyToGuiButton(valuesDict)
 		else:
-			self.applyToGuiRot(valuesDict, value, key)
+			self.applyToGuiRot(valuesDict, value)
 
-	def applyToGuiButton(self, valuesDict, value, key):
+	def applyToGuiButton(self, valuesDict):
 		# print(valuesDict)
 		if valuesDict['buttontype'] == 'rythmbutton':
 			ID = int(valuesDict['buttonid'])
@@ -713,9 +709,9 @@ class Gui:
 		elif valuesDict['buttontype'] == 'wavebutton':
 			ID = int(valuesDict['id'])
 			wave = valuesDict['wave']
-			# self.gui.vcoButtons[ID].toggle(state)
+			self.waveButtons[ID].toggle(wave)
 
-	def applyToGuiRot(self, valuesDict, value, key):
+	def applyToGuiRot(self, valuesDict, value):
 		ID = valuesDict['rotid']
 		if valuesDict['rottype'] == 'generic':
 			self.r[ID].setValue(value)

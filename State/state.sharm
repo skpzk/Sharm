@@ -349,12 +349,21 @@ stepid = 1
 seqid = 1
 value = 10
 
-[wave]
+[wave0]
 id = 0
 v0 = 0
 v1 = 2
 v2 = 3
 wave = sqr
+buttontype = wavebutton
+type = button
+
+[wave1]
+id = 1
+v0 = 1
+v1 = 4
+v2 = 5
+wave = saw
 buttontype = wavebutton
 type = button
 

@@ -62,7 +62,7 @@ class Sharm:
 		root = tk.Tk()
 		sharmGui = Gui.Gui(root)
 
-		State.events.put(State.Event('gui initialized', 0))
+		# State.events.put(State.Event('gui initialized', 0))
 
 		while sharmGui.On:
 			sharmGui.checkQueue()
@@ -92,7 +92,6 @@ class Sharm:
 			self.called = True
 			self.state.save()
 
-			# cprint("Audio Stopping...")
 			self.audio.stop()
 			self.audio.join()
 			self.audio.close()

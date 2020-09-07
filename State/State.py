@@ -40,8 +40,6 @@ class State:
 		self.read()
 		self.apply()
 
-		# audio.voices = voices
-
 		print("State Finished")
 
 		sharm.audio.stateFinished = True
@@ -142,7 +140,7 @@ class State:
 				else:
 					self.seq2.toggleVoice(self.voices.voices[voiceID], state)
 
-			elif message.param == 'wave':
+			elif message.param[:4] == 'wave':
 				v0 = message.value['v0']
 				v1 = message.value['v1']
 				v2 = message.value['v2']
