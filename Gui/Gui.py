@@ -74,6 +74,7 @@ class Gui:
 		self.back.bind("<Configure>", self.on_resize)
 
 	def quit_root(self, _event=""):
+		print("KeyPress-q caught")
 		self.root.quit()
 		self.On = False
 		State.events.put(State.Event(-1, -1))

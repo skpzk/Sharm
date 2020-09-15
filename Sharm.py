@@ -90,8 +90,6 @@ class Sharm:
 			self.state.save()
 
 			self.audio.stop()
-			self.audio.join()
-			self.audio.close()
 
 			self.gui.join()
 			self.gui.close()

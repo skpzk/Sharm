@@ -1,10 +1,9 @@
-# import numpy as np
-import time
-# import queue
-import pyaudio
+import sounddevice as sd
 import threading
 import multiprocessing
 
+import time
+import numpy as np
 from AudioLib.Utils import *
 from AudioLib import Note
 
@@ -21,7 +20,7 @@ class AudioConst:
 		MasterClk calls the four clk
 		clks call seqs
 		seqs start and stop voices
-	
+
 	Audio:
 		audio mainloop calls vcf
 		vcf calls voices
@@ -42,22 +41,29 @@ class Audio(threading.Thread):
 	callsList = []
 	synclist = []
 
+	def callback(self, outdata, frames, _, status):
+		if status:
+			print(status)
+		if not self.playback_frames.empty():
+			data = self.playback_frames.get(block=False)
+		else:
+			data = np.expand_dims(np.zeros(frames), axis=1)
+			# print(data.shape)
+		outdata[:] = data
+
 	def __init__(self, chunk=None):
 		self.init_playback(chunk)
 		threading.Thread.__init__(self)
 
-	def callback(self, in_data, frame_count, _0, status):
-		in_data = bytes(np.zeros(frame_count, dtype=np.int16))
+	def init_playback(self, chunk):
+		self.init_audio(chunk)
+		self.stream = sd.OutputStream(channels=self.CHANNELS,
+		                              callback=self.callback,
+		                              samplerate=self.RATE,
+		                              blocksize=self.CHUNK,
+		                              dtype='float32')
 
-		if not self.playback_frames.empty():
-			in_data = self.playback_frames.get(block=False)
-		else:
-			# cprint("Underrun")
-			pass
-
-		# print("len(playback_frames) = ", self.playback_frames.qsize())
-
-		return in_data, pyaudio.paContinue
+		self.stream.start()
 
 	def init_audio(self, chunk):
 		if chunk is not None:
@@ -65,35 +71,16 @@ class Audio(threading.Thread):
 		else:
 			self.CHUNK = int(0.25 * 1024)
 			# self.CHUNK = 4 * 1024
-		self.FORMAT = pyaudio.paInt16
 		self.CHANNELS = 1
 		self.RATE = 44100
 		self.callsList = []
 		self.synclist = []
 
-	def init_playback(self, chunk):
-		self.init_audio(chunk)
-		self.p = pyaudio.PyAudio()
-		self.stream = self.p.open(format=self.FORMAT,
-															channels=self.CHANNELS,
-															rate=self.RATE,
-															input=False,
-															output=True,
-															frames_per_buffer=self.CHUNK,
-															stream_callback=self.callback)
-
-		self.stream.start_stream()
-
-	def close(self):
-		self.stream.stop_stream()
-		self.stream.close()
-		self.p.terminate()
+	def stop(self):
+		self.On = False
 
 	def write(self, data):
 		self.playback_frames.put(data, block=True)
-
-	def stop(self):
-		self.On = False
 
 	def compute(self):
 
@@ -103,11 +90,10 @@ class Audio(threading.Thread):
 			data += call()
 
 		data = ssat(data) * 8.
-		data = data * np.power(2, 14)
+		data = data * np.power(2, 2)
 
-		data = np.array(data, dtype=np.int16)
-
-		self.write(bytes(data))
+		data = np.expand_dims(data, axis=1)
+		self.write(data)
 
 	def run(self):
 
@@ -129,8 +115,6 @@ if __name__ == "__main__":
 	note.env.setADSR([0, 0, 127, 0])
 	note.on(69)
 
-	time.sleep(5)
+	time.sleep(1)
 
 	audio.stop()
-	audio.join()
-	audio.close()

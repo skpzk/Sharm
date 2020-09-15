@@ -183,7 +183,7 @@ class RhythmSection(Section):
 		self.drawSection()
 
 	def configureBack(self):
-		self.back.bind(self.back.bind("<KeyPress-q>", self.gui.quit_root))
+		self.back.bind("<KeyPress-q>", self.gui.quit_root)
 		relh = 346 / self.mainBack.winfo_height()
 		relw = 240 / self.mainBack.winfo_width()
 		relx = 22 / self.mainBack.winfo_height()
@@ -390,7 +390,7 @@ class GeneralSection(Section):
 		self.drawSection()
 
 	def configureBack(self):
-		self.back.bind(self.back.bind("<KeyPress-q>", self.gui.quit_root))
+		self.back.bind("<KeyPress-q>", self.gui.quit_root)
 		relh = 123 / self.mainBack.winfo_height()
 		relw = (206 - 22) / self.mainBack.winfo_width()
 		relx = 22 / self.mainBack.winfo_width()  # - 0.1
@@ -436,7 +436,7 @@ class FilterSection(Section):
 		self.drawSection()
 
 	def configureBack(self):
-		self.back.bind(self.back.bind("<KeyPress-q>", self.gui.quit_root))
+		self.back.bind("<KeyPress-q>", self.gui.quit_root)
 		relh = 160 / self.mainBack.winfo_height()
 		relw = (579 - 380) / self.mainBack.winfo_width()
 		relx = 380 / self.mainBack.winfo_width()  # + 0.1
@@ -448,7 +448,7 @@ class FilterSection(Section):
 	def drawSection(self):
 		def createSubframe(w, x):
 			cutoffback = tk.Frame(master=self.back)
-			cutoffback.bind(self.back.bind("<KeyPress-q>", self.gui.quit_root))
+			cutoffback.bind("<KeyPress-q>", self.gui.quit_root)
 			cutoffback.place(relx=x, rely=self.relHeight, relheight=1, relwidth=w)
 			cutoffback.config(bg=Gui.mainColor)
 			cutoffback.update()
@@ -523,7 +523,7 @@ class EnvSection(Section):
 		self.drawSection()
 
 	def configureBack(self):
-		self.back.bind(self.back.bind("<KeyPress-q>", self.gui.quit_root))
+		self.back.bind("<KeyPress-q>", self.gui.quit_root)
 		relh = 160 / self.mainBack.winfo_height()
 		relw = (354 - 235) / self.mainBack.winfo_width()
 		relx = 235 / self.mainBack.winfo_width()  # + 0.1

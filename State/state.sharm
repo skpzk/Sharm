@@ -10,7 +10,7 @@ type = rot
 rottype = general
 messagetype = undef
 rotid = 1
-value = 31
+value = 55
 
 [Clk1]
 type = rot
@@ -89,7 +89,7 @@ messagetype = vco
 rotid = 0
 vcoid = 1
 voiceid = 0
-value = 126
+value = 113
 
 [Sub12]
 type = rot
@@ -112,42 +112,42 @@ type = rot
 rottype = env
 messagetype = undef
 rotid = 2
-value = 35
+value = 57
 
 [fc]
 type = rot
 rottype = filter
 messagetype = undef
 rotid = 0
-value = 83
+value = 72
 
 [Q]
 type = rot
 rottype = filter
 messagetype = undef
 rotid = 1
-value = 4.44
+value = 4.71
 
 [R]
 type = rot
 rottype = env
 messagetype = undef
 rotid = 3
-value = 64
+value = 88
 
 [A]
 type = rot
 rottype = env
 messagetype = undef
 rotid = 0
-value = 16
+value = 18
 
 [D]
 type = rot
 rottype = env
 messagetype = undef
 rotid = 1
-value = 91
+value = 46
 
 [Step11]
 type = rot
@@ -235,7 +235,7 @@ rottype = rhythm
 messagetype = clk
 rotid = 11
 clkid = 4
-value = 1
+value = 10
 
 [wave0]
 id = 0
@@ -276,7 +276,7 @@ type = rot
 rottype = filter
 messagetype = undef
 rotid = 2
-value = 79
+value = 0
 
 [A filter]
 type = rot
@@ -307,7 +307,7 @@ rottype = vco
 messagetype = level
 rotid = 9
 voiceid = 1
-value = 114
+value = 113
 
 [level4]
 type = rot
@@ -315,7 +315,7 @@ rottype = vco
 messagetype = level
 rotid = 10
 voiceid = 4
-value = 104
+value = 101
 
 [level5]
 type = rot
@@ -323,7 +323,7 @@ rottype = vco
 messagetype = level
 rotid = 11
 voiceid = 5
-value = 127
+value = 86
 
 [level3]
 type = rot
@@ -331,7 +331,7 @@ rottype = vco
 messagetype = level
 rotid = 5
 voiceid = 3
-value = 97
+value = 82
 
 [level2]
 type = rot
@@ -339,7 +339,7 @@ rottype = vco
 messagetype = level
 rotid = 4
 voiceid = 2
-value = 121
+value = 104
 
 [level0]
 type = rot
@@ -347,7 +347,7 @@ rottype = vco
 messagetype = level
 rotid = 3
 voiceid = 0
-value = 19
+value = 99
 
 [callbackClk11]
 type = button
