@@ -1,221 +1,20 @@
 [Vol]
 type = rot
-rottype = generic
+rottype = general
 messagetype = undef
 rotid = 0
-value = 84
+value = 127
 
 [Tempo]
 type = rot
-rottype = generic
+rottype = general
 messagetype = undef
 rotid = 1
-value = 47
-
-[A]
-type = rot
-rottype = envrot
-messagetype = undef
-rotid = 0
-value = 21
-
-[D]
-type = rot
-rottype = envrot
-messagetype = undef
-rotid = 1
-value = 19
-
-[S]
-type = rot
-rottype = envrot
-messagetype = undef
-rotid = 2
-value = 99
-
-[R]
-type = rot
-rottype = envrot
-messagetype = undef
-rotid = 3
-value = 108
-
-[fc]
-type = rot
-rottype = filterrot
-messagetype = undef
-rotid = 0
-value = 70
-
-[Q]
-type = rot
-rottype = filterrot
-messagetype = undef
-rotid = 1
-value = 4.935
-
-[EG Amount]
-type = rot
-rottype = filterrot
-messagetype = undef
-rotid = 2
-value = 40
-
-[A filter]
-type = rot
-rottype = filterrot
-messagetype = undef
-rotid = 3
-value = 119
-
-[D filter]
-type = rot
-rottype = filterrot
-messagetype = undef
-rotid = 4
-value = 125
-
-[level0]
-type = rot
-rottype = vcorot
-messagetype = level
-rotid = 6
-id = 0
-value = 84
-
-[level2]
-type = rot
-rottype = vcorot
-messagetype = level
-rotid = 8
-id = 2
-value = 73
-
-[level3]
-type = rot
-rottype = vcorot
-messagetype = level
-rotid = 9
-id = 3
-value = 93
-
-[level1]
-type = rot
-rottype = vcorot
-messagetype = level
-rotid = 7
-id = 1
-value = 123
-
-[level4]
-type = rot
-rottype = vcorot
-messagetype = level
-rotid = 10
-id = 4
-value = 117
-
-[level5]
-type = rot
-rottype = vcorot
-messagetype = level
-rotid = 11
-id = 5
-value = 112
-
-[assign10]
-seqid = 1
-id = 0
-voiceid = 0
-state = 0
-type = button
-buttontype = vcobutton
-
-[assign11]
-seqid = 1
-id = 1
-voiceid = 2
-state = 0
-type = button
-buttontype = vcobutton
-
-[assign23]
-seqid = 2
-id = 3
-voiceid = 1
-state = 0
-type = button
-buttontype = vcobutton
-
-[assign25]
-seqid = 2
-id = 5
-voiceid = 5
-state = 0
-type = button
-buttontype = vcobutton
-
-[Vco1]
-type = rot
-rottype = vcorot
-messagetype = vco
-rotid = 0
-vcoid = 1
-voiceid = 1
-value = 120
-
-[Vco2]
-type = rot
-rottype = vcorot
-messagetype = vco
-rotid = 1
-vcoid = 2
-voiceid = 2
-value = 88
-
-[Sub12]
-type = rot
-rottype = vcorot
-messagetype = sub
-rotid = 2
-voiceid = 2
-value = 5
-
-[Sub23]
-type = rot
-rottype = vcorot
-messagetype = sub
-rotid = 3
-voiceid = 3
-value = 4
-
-[Sub24]
-type = rot
-rottype = vcorot
-messagetype = sub
-rotid = 4
-voiceid = 4
-value = 5
-
-[Sub25]
-type = rot
-rottype = vcorot
-messagetype = sub
-rotid = 5
-voiceid = 5
-value = 4
-
-[Clk4]
-type = rot
-rottype = rythmrot
-messagetype = clk
-rotid = 11
-clkid = 4
-value = 11
+value = 31
 
 [Clk1]
 type = rot
-rottype = rythmrot
+rottype = rhythm
 messagetype = clk
 rotid = 8
 clkid = 1
@@ -223,147 +22,394 @@ value = 2
 
 [Clk2]
 type = rot
-rottype = rythmrot
+rottype = rhythm
 messagetype = clk
 rotid = 9
 clkid = 2
 value = 3
 
-[Clk3]
-type = rot
-rottype = rythmrot
-messagetype = clk
-rotid = 10
-clkid = 3
-value = 1
-
-[callbackClk11]
+[assign10]
+type = button
+state = 0
+seqid = 1
 buttonid = 0
-clkid = 1
-seqid = 1
-state = 0
-type = button
-buttontype = rythmbutton
+id = 0
+voiceid = 0
+buttontype = vco
 
-[callbackClk12]
+[assign11]
+type = button
+state = 1
+seqid = 1
+buttonid = 1
+id = 1
+voiceid = 2
+buttontype = vco
+
+[assign12]
+type = button
+state = 0
+seqid = 1
 buttonid = 2
-clkid = 2
-seqid = 1
-state = 0
-type = button
-buttontype = rythmbutton
+id = 2
+voiceid = 3
+buttontype = vco
 
-[callbackClk22]
+[assign23]
+type = button
+state = 0
+seqid = 2
 buttonid = 3
-clkid = 2
+id = 3
+voiceid = 1
+buttontype = vco
+
+[assign24]
+type = button
+state = 1
 seqid = 2
-state = 0
-type = button
-buttontype = rythmbutton
+buttonid = 4
+id = 4
+voiceid = 4
+buttontype = vco
 
-[callbackClk14]
-buttonid = 6
-clkid = 4
-seqid = 1
-state = 0
+[assign25]
 type = button
-buttontype = rythmbutton
-
-[callbackClk23]
+state = 0
+seqid = 2
 buttonid = 5
-clkid = 3
-seqid = 2
-state = 0
-type = button
-buttontype = rythmbutton
+id = 5
+voiceid = 5
+buttontype = vco
 
-[Step12]
+[Vco1]
 type = rot
-rottype = rythmrot
-messagetype = step
-rotid = 4
-stepid = 1
-seqid = 2
+rottype = vco
+messagetype = vco
+rotid = 0
+vcoid = 1
+voiceid = 0
+value = 126
+
+[Sub12]
+type = rot
+rottype = vco
+messagetype = sub
+rotid = 1
+voiceid = 2
 value = 3
 
-[Step22]
+[Sub23]
 type = rot
-rottype = rythmrot
-messagetype = step
-rotid = 5
-stepid = 2
-seqid = 2
-value = 5
-
-[Step32]
-type = rot
-rottype = rythmrot
-messagetype = step
-rotid = 6
-stepid = 3
-seqid = 2
+rottype = vco
+messagetype = sub
+rotid = 2
+voiceid = 3
 value = 4
 
-[Step42]
+[S]
 type = rot
-rottype = rythmrot
-messagetype = step
-rotid = 7
-stepid = 4
-seqid = 2
-value = 5
-
-[Step41]
-type = rot
-rottype = rythmrot
-messagetype = step
-rotid = 3
-stepid = 4
-seqid = 1
-value = 3
-
-[Step31]
-type = rot
-rottype = rythmrot
-messagetype = step
+rottype = env
+messagetype = undef
 rotid = 2
-stepid = 3
-seqid = 1
-value = 5
+value = 35
 
-[Step21]
+[fc]
 type = rot
-rottype = rythmrot
-messagetype = step
+rottype = filter
+messagetype = undef
+rotid = 0
+value = 83
+
+[Q]
+type = rot
+rottype = filter
+messagetype = undef
 rotid = 1
-stepid = 2
-seqid = 1
-value = 7
+value = 4.44
+
+[R]
+type = rot
+rottype = env
+messagetype = undef
+rotid = 3
+value = 64
+
+[A]
+type = rot
+rottype = env
+messagetype = undef
+rotid = 0
+value = 16
+
+[D]
+type = rot
+rottype = env
+messagetype = undef
+rotid = 1
+value = 91
 
 [Step11]
 type = rot
-rottype = rythmrot
+rottype = rhythm
 messagetype = step
 rotid = 0
 stepid = 1
 seqid = 1
-value = 10
+value = 3
+
+[Step21]
+type = rot
+rottype = rhythm
+messagetype = step
+rotid = 1
+stepid = 2
+seqid = 1
+value = 5
+
+[Step31]
+type = rot
+rottype = rhythm
+messagetype = step
+rotid = 2
+stepid = 3
+seqid = 1
+value = 3
+
+[Step41]
+type = rot
+rottype = rhythm
+messagetype = step
+rotid = 3
+stepid = 4
+seqid = 1
+value = 2
+
+[Step12]
+type = rot
+rottype = rhythm
+messagetype = step
+rotid = 4
+stepid = 1
+seqid = 2
+value = 1
+
+[Step22]
+type = rot
+rottype = rhythm
+messagetype = step
+rotid = 5
+stepid = 2
+seqid = 2
+value = 4
+
+[Step32]
+type = rot
+rottype = rhythm
+messagetype = step
+rotid = 6
+stepid = 3
+seqid = 2
+value = 6
+
+[Step42]
+type = rot
+rottype = rhythm
+messagetype = step
+rotid = 7
+stepid = 4
+seqid = 2
+value = 3
+
+[Clk3]
+type = rot
+rottype = rhythm
+messagetype = clk
+rotid = 10
+clkid = 3
+value = 7
+
+[Clk4]
+type = rot
+rottype = rhythm
+messagetype = clk
+rotid = 11
+clkid = 4
+value = 1
 
 [wave0]
 id = 0
 v0 = 0
 v1 = 2
 v2 = 3
-wave = sqr
-buttontype = wavebutton
+wave = tri
+buttontype = wave
 type = button
+
+[Sub24]
+type = rot
+rottype = vco
+messagetype = sub
+rotid = 7
+voiceid = 4
+value = 7
+
+[Sub25]
+type = rot
+rottype = vco
+messagetype = sub
+rotid = 8
+voiceid = 5
+value = 3
+
+[Vco2]
+type = rot
+rottype = vco
+messagetype = vco
+rotid = 6
+vcoid = 2
+voiceid = 1
+value = 98
+
+[EG Amount]
+type = rot
+rottype = filter
+messagetype = undef
+rotid = 2
+value = 79
+
+[A filter]
+type = rot
+rottype = filter
+messagetype = undef
+rotid = 3
+value = 111
+
+[D filter]
+type = rot
+rottype = filter
+messagetype = undef
+rotid = 4
+value = 104
 
 [wave1]
 id = 1
 v0 = 1
 v1 = 4
 v2 = 5
-wave = saw
-buttontype = wavebutton
+wave = tri
+buttontype = wave
 type = button
+
+[level1]
+type = rot
+rottype = vco
+messagetype = level
+rotid = 9
+voiceid = 1
+value = 114
+
+[level4]
+type = rot
+rottype = vco
+messagetype = level
+rotid = 10
+voiceid = 4
+value = 104
+
+[level5]
+type = rot
+rottype = vco
+messagetype = level
+rotid = 11
+voiceid = 5
+value = 127
+
+[level3]
+type = rot
+rottype = vco
+messagetype = level
+rotid = 5
+voiceid = 3
+value = 97
+
+[level2]
+type = rot
+rottype = vco
+messagetype = level
+rotid = 4
+voiceid = 2
+value = 121
+
+[level0]
+type = rot
+rottype = vco
+messagetype = level
+rotid = 3
+voiceid = 0
+value = 19
+
+[callbackClk11]
+type = button
+state = 0
+seqid = 1
+buttonid = 0
+clkid = 1
+buttontype = rhythm
+
+[callbackClk12]
+type = button
+state = 1
+seqid = 1
+buttonid = 1
+clkid = 2
+buttontype = rhythm
+
+[callbackClk13]
+type = button
+state = 0
+seqid = 1
+buttonid = 2
+clkid = 3
+buttontype = rhythm
+
+[callbackClk14]
+type = button
+state = 1
+seqid = 1
+buttonid = 3
+clkid = 4
+buttontype = rhythm
+
+[callbackClk21]
+type = button
+state = 1
+seqid = 2
+buttonid = 4
+clkid = 1
+buttontype = rhythm
+
+[callbackClk22]
+type = button
+state = 0
+seqid = 2
+buttonid = 5
+clkid = 2
+buttontype = rhythm
+
+[callbackClk23]
+type = button
+state = 1
+seqid = 2
+buttonid = 6
+clkid = 3
+buttontype = rhythm
+
+[callbackClk24]
+type = button
+state = 0
+seqid = 2
+buttonid = 7
+clkid = 4
+buttontype = rhythm
 

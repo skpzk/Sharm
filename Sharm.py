@@ -1,5 +1,6 @@
 import queue
 import multiprocessing
+import threading
 import tkinter as tk
 import time
 
@@ -62,14 +63,10 @@ class Sharm:
 		root = tk.Tk()
 		sharmGui = Gui.Gui(root)
 
-		# State.events.put(State.Event('gui initialized', 0))
-
-		while sharmGui.On:
-			sharmGui.checkQueue()
-			root.update_idletasks()
-			root.update()
-			time.sleep(0.05)
-
+		checkQueue = threading.Thread(target=sharmGui.checkQueueLoop)
+		checkQueue.start()
+		root.mainloop()
+		checkQueue.join()
 		time.sleep(0.5)
 
 	def mainLoop(self):

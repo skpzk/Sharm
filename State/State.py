@@ -79,20 +79,21 @@ class State:
 
 	def change(self, message):
 		updating = True  # if the message can't be read, the state isn't updated
+		# print(message.value)
 		if message.value['type'] == 'rot':
-			if message.value['rottype'] in ['generic', 'filterrot', 'envrot']:
+			if message.value['rottype'] in ['general', 'filter', 'env']:
 				try:
 					self.genericRotDict[message.param](message.value['value'])
 				except KeyError:
 					updating = False
 
-			elif message.value['rottype'] == 'vcorot':
+			elif message.value['rottype'] == 'vco':
 				if message.param[:5] == 'level':
-					voiceID = message.value['id']
+					voiceID = message.value['voiceid']
 					self.voices.voices[voiceID].setVol(message.value['value'])
 
 				elif message.param[:3] == 'Vco':
-					voiceID = message.value['voiceid'] - 1
+					voiceID = message.value['voiceid']
 					# print("State : setBaseNote")
 					self.voices.voices[voiceID].setBaseNote(message.value['value'])
 					self.voices.voices[voiceID * 2 + 2].setMasterNote(message.value['value'])
@@ -102,7 +103,7 @@ class State:
 					voiceID = message.value['voiceid']
 					self.voices.voices[voiceID].setDiv(message.value['value'])
 
-			elif message.value['rottype'] == 'rythmrot':
+			elif message.value['rottype'] == 'rhythm':
 				if message.param[:4] == 'Step':
 					seqID = message.value['seqid']
 					stepID = message.value['stepid']
@@ -127,8 +128,10 @@ class State:
 				clkID = message.value['clkid']
 				seqID = message.value['seqid']
 				if seqID == 1:
+					# print("toogle seq1")
 					self.clk[clkID - 1].toggleCallback(1, self.seq1.callback, state)
 				else:
+					# print("toogle seq2")
 					self.clk[clkID - 1].toggleCallback(2, self.seq2.callback, state)
 
 			elif message.param[:6] == 'assign':

@@ -95,8 +95,10 @@ class Clk:
 				self.setCallback(seqID, function)
 		else:
 			if state == 1 and (str(seqID) in self.callsDict.keys()):
+				# print("Clk", self.ID, "remove callback to seq", seqID)
 				self.removeCallback(seqID)
-			elif str(seqID) not in self.callsDict.keys():
+			elif state == 0 and str(seqID) not in self.callsDict.keys():
+				# print("Clk", self.ID, "add callback to seq", seqID)
 				self.setCallback(seqID, function)
 
 	def callback(self, seq1called, seq2called):
