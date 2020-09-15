@@ -30,5 +30,5 @@ Run main.py in your terminal
 ### Improvements to come:
 * Currently the file "State/state.sharm" stores all parameters when closing the window, a future version will add the possibility to save and load patches.
 * Many minor corrections to be done.
-* In a future version, a patchbay will be integrated, but this means recoding the audio lib. The interface should look like this :
+* In a future version, a patchbay will be integrated, but this means rewriting the audio lib. The interface should look like this :
 ![Interface of the synth](Gui/SharmGui.png)
