@@ -149,7 +149,9 @@ class Gui:
 
 	def checkQueue(self):
 		try:
-			message = events.get(block=False)
+			# for some reason the program doesn't stop properly
+			# when using the wm close button if there is no block
+			message = events.get(block=True, timeout=.5)
 			if isinstance(message, State.Event):
 				self.change(message)
 		except queue.Empty:
