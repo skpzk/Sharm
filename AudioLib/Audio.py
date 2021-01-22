@@ -5,10 +5,19 @@ import multiprocessing
 import time
 import numpy as np
 from AudioLib.Utils import *
-from AudioLib import Note
+from Dev.DebugUtils import *
+
+
+class AudioConstTest:
+	CHUNK = int(0.25 * 1024)
+	RATE = 44100
 
 
 class AudioConst:
+	"""
+	this class contains information about the audio rate and the size of the audio buffer
+	all audio objects could inherit from it
+	"""
 	def __init__(self, audio):
 		self.CHUNK = audio.CHUNK
 		self.RATE = audio.RATE
@@ -48,7 +57,7 @@ class Audio(threading.Thread):
 			data = self.playback_frames.get(block=False)
 		else:
 			data = np.expand_dims(np.zeros(frames), axis=1)
-			# print(data.shape)
+		# cprint(data)
 		outdata[:] = data
 
 	def __init__(self, chunk=None):
@@ -66,6 +75,8 @@ class Audio(threading.Thread):
 		self.stream.start()
 
 	def init_audio(self, chunk):
+		# this feature is intended for debugging purposes only
+		# and sould not appear in the final program
 		if chunk is not None:
 			self.CHUNK = chunk
 		else:
@@ -89,10 +100,10 @@ class Audio(threading.Thread):
 		for call in self.callsList:
 			data += call()
 
-		data = ssat(data) * 8.
-		data = data * np.power(2, 2)
+		data = ssat(data, 1)
 
 		data = np.expand_dims(data, axis=1)
+		# cprint(data)
 		self.write(data)
 
 	def run(self):
@@ -107,14 +118,37 @@ class Audio(threading.Thread):
 
 
 if __name__ == "__main__":
+	from AudioLib import Vco, Vca, Env
+	from AudioLib import AudioPatch
 	audio = Audio()
 	audio.start()
 
-	note = Note.Note(audio)
-	audio.callsList.append(note)
-	note.env.setADSR([0, 0, 127, 0])
-	note.on(69)
+	# audioPatch = AudioPatch.AudioPatch()
 
+	env = Env.Env()
+	vca = Vca.Vca()
+	vco = Vco.Vco()
+	sub = Vco.Sub(vco)
+	vca.soundSources.append(vco)
+	vca.soundSources.append(sub)
+	vca.envSource.env = env
+	env.on()
+	vco.setWave('sqr')
+	sub.setWave('sine')
+
+	sub.setDiv(20)
+	vco.setVolume(0.2)
+	sub.setVolume(0.6)
+	vco.modSources.pwm = sub.call
+	# vco.setNote(60)
+	audio.callsList.append(vca)
+	time.sleep(1)
+	vco.setBaseNote(60)
+	# vco.modSources.freq = ""
+	time.sleep(1)
+	env.r = 120
+	env.off()
+	vco.setBaseNote(69)
 	time.sleep(1)
 
 	audio.stop()

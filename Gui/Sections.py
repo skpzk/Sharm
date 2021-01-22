@@ -7,7 +7,9 @@ from Gui.Rotary import Rotary
 from Gui.ResizingCanvas import ResizingCanvas
 from Gui import Buttons
 from Gui import WaveSelect
-from Gui import Gui
+from Gui.Ui import mainColor
+from Dev.DebugUtils import *
+from State import State
 
 
 class Section(ABC):
@@ -86,12 +88,24 @@ class Section(ABC):
 			scale = kwargs['scale']
 		except KeyError:
 			scale = 1
+		try:
+			lines = kwargs['lines']
+		except KeyError:
+			lines = True
+		try:
+			invert = kwargs['invert']
+		except KeyError:
+			invert = True
+		try:
+			fontsize = kwargs['fontsize']
+		except KeyError:
+			fontsize = 8
 		back.update()
 		sectionW = back.winfo_width()
 		sectionH = back.winfo_height()
 		relHeight = 20 / sectionH
 
-		titleCanvas = ResizingCanvas(back, highlightthickness=0, bg=Gui.mainColor)
+		titleCanvas = ResizingCanvas(back, highlightthickness=0, bg=mainColor)
 		titleCanvas.place(relx=(1 - scale)/2, rely=self.relHeight, relwidth=scale, relheight=relHeight)
 
 		titleCanvas.update()
@@ -100,18 +114,20 @@ class Section(ABC):
 		titleX = titleCanvas.winfo_width()/2
 		titleY = titleCanvas.winfo_height()/2
 		titleID = titleCanvas.create_text(titleX, titleY, text=title)
-		titleCanvas.itemconfig(titleID, font=("Purisa", 8))
+		titleCanvas.itemconfig(titleID, font=("Purisa", fontsize))
 		titleCanvas.coords(titleID, (sectionW / 2, 10))
 		bbox = titleCanvas.bbox(titleID)
 
 		bbox = [bbox[0] - 1, bbox[1] - 1, bbox[2], bbox[3]]
 
-		titleCanvas.create_line(0, 10, bbox[0] - 3, 10)
-		titleCanvas.create_line(bbox[2] + 3, 10, sectionW, 10)
+		if lines:
+			titleCanvas.create_line(0, 10, bbox[0] - 3, 10)
+			titleCanvas.create_line(bbox[2] + 3, 10, sectionW, 10)
 
-		titleCanvas.create_rectangle(bbox, fill='black')
-		titleCanvas.itemconfig(titleID, fill='white')
-		titleCanvas.tag_raise(titleID)
+		if invert:
+			titleCanvas.create_rectangle(bbox, fill='black')
+			titleCanvas.itemconfig(titleID, fill='white')
+			titleCanvas.tag_raise(titleID)
 
 		titleCanvas.addtag_all("all")
 
@@ -122,6 +138,18 @@ class Section(ABC):
 			back = kwargs['back']
 		except KeyError:
 			back = self.back
+		try:
+			buttonH = kwargs['buttonH']
+		except KeyError:
+			buttonH = 20
+		try:
+			IDoffset = kwargs['IDoffset']
+		except KeyError:
+			IDoffset = 0
+		try:
+			var = kwargs['var']
+		except KeyError:
+			var = None
 		if not isinstance(back, tk.Frame):
 			back = self.back
 		rows = kwargs['rows']
@@ -134,7 +162,7 @@ class Section(ABC):
 		sectionH = back.winfo_height()
 		canvasW = relw * sectionW
 		relh = canvasH / sectionH
-		buttonRel = [width/canvasW, 20/canvasH]
+		buttonRel = [width/canvasW, buttonH/canvasH]
 
 		for j in range(rows):
 			rely = self.relHeight
@@ -145,7 +173,8 @@ class Section(ABC):
 				seqID = j+1
 				clkID = i+1
 
-				self.addButton(back, rel, buttonRel, seqID=seqID, clkID=clkID)
+				self.addButton(back, rel, buttonRel,
+				               seqID=seqID, clkID=clkID, ID=i + j*columns, IDoffset=IDoffset, var=var)
 
 				self.currentButtonID += 1
 
@@ -186,10 +215,10 @@ class RhythmSection(Section):
 		self.back.bind("<KeyPress-q>", self.gui.quit_root)
 		relh = 346 / self.mainBack.winfo_height()
 		relw = 240 / self.mainBack.winfo_width()
-		relx = 22 / self.mainBack.winfo_height()
-		rely = 17 / self.mainBack.winfo_width()
+		relx = 22 / self.mainBack.winfo_width()
+		rely = 16 / self.mainBack.winfo_height()
 		self.back.place(relx=relx, rely=rely, relheight=relh, relwidth=relw)
-		self.back.config(bg=Gui.mainColor)
+		self.back.config(bg=mainColor)
 		self.back.update()
 
 	def drawSection(self):
@@ -213,15 +242,23 @@ class RhythmSection(Section):
 		except IndexError:
 			title = 'Undef'
 		if title[:4] == "Step":
-			self.rots[ID].valueMax = 15
+			self.rots[ID].valueMax = 2400
+			self.rots[ID].valueMin = 0
+			# self.rots[ID].promptValuesFromPromptTable = True
+			# self.rots[ID].valueMax =
+
 			self.rots[ID].param = 'Step' + title[4] + title[8]
 
-			self.rots[ID].valuesTablePrompt = [17 - i for i in range(1, 17)]
-			self.rots[ID].valuesTableSend = self.rots[ID].valuesTablePrompt
+			self.rots[ID].valuesTablePrompt = [str("%.1f" % (i * .1)) for i in range(-1200, 1201)]
+			# cprint("len valuesTableSend = ", len(self.rots[ID].valuesTableSend))
+			# cprint("len valuesTablePrompt = ", len(self.rots[ID].valuesTablePrompt))
+			# self.rots[ID].valuesTableSend = self.rots[ID].valuesTablePrompt
 
 			self.rots[ID].dictToSend['messagetype'] = 'step'
 			self.rots[ID].dictToSend['stepid'] = int(title[4])
 			self.rots[ID].dictToSend['seqid'] = int(title[8])
+
+			self.rots[ID].setValue(1200, False)
 
 			self.rots[ID].canvas.itemconfig(self.rots[ID].arc, outline='DeepSkyBlue2')
 
@@ -235,7 +272,7 @@ class RhythmSection(Section):
 			self.rots[ID].dictToSend['messagetype'] = 'clk'
 			self.rots[ID].canvas.itemconfig(self.rots[ID].arc, outline='red')
 
-		self.rots[ID].setValue(1)
+			self.rots[ID].setValue(1)
 		self.rots[ID].setTitle(title)
 		if self.rots[ID].param == "":  # only used by Clk rots
 			self.rots[ID].param = title
@@ -270,7 +307,7 @@ class VcoSection(Section):
 		relh = (395 - 17) / self.mainBack.winfo_height()
 		relw = (580 - 286) / self.mainBack.winfo_width()
 		relx = 286 / self.mainBack.winfo_width()  # + 0.1
-		rely = 17 / self.mainBack.winfo_height()
+		rely = 16 / self.mainBack.winfo_height()
 		self.back.place(relx=relx, rely=rely, relheight=relh, relwidth=relw)
 		self.back.config(bg="white")
 		self.back.update()
@@ -287,7 +324,7 @@ class VcoSection(Section):
 			vcoback = tk.Frame(master=self.back)
 			vcoback.bind("<KeyPress-q>", self.gui.quit_root)
 			vcoback.place(relx=i/2, rely=0, relheight=1, relwidth=1/2)
-			vcoback.config(bg=Gui.mainColor)
+			vcoback.config(bg=mainColor)
 			vcoback.update()
 
 			# draw the vcoX subsection
@@ -327,7 +364,7 @@ class VcoSection(Section):
 		relx = relw/2 + i * (1 - 2 * relw)
 		rely = 0.1
 
-		waveCanvas = ResizingCanvas(back, highlightthickness=0, bg=Gui.mainColor)
+		waveCanvas = ResizingCanvas(back, highlightthickness=0, bg=mainColor)
 		waveCanvas.place(relx=relx, rely=rely, relwidth=relw, relheight=relh)
 
 		waveCanvas.update()
@@ -396,7 +433,7 @@ class GeneralSection(Section):
 		relx = 22 / self.mainBack.winfo_width()  # - 0.1
 		rely = 406 / self.mainBack.winfo_height()
 		self.back.place(relx=relx, rely=rely, relheight=relh, relwidth=relw)
-		self.back.config(bg=Gui.mainColor)
+		self.back.config(bg=mainColor)
 		self.back.update()
 
 	def drawSection(self):
@@ -442,7 +479,7 @@ class FilterSection(Section):
 		relx = 380 / self.mainBack.winfo_width()  # + 0.1
 		rely = 406 / self.mainBack.winfo_height()
 		self.back.place(relx=relx, rely=rely, relheight=relh, relwidth=relw)
-		self.back.config(bg=Gui.mainColor)
+		self.back.config(bg=mainColor)
 		self.back.update()
 
 	def drawSection(self):
@@ -450,7 +487,7 @@ class FilterSection(Section):
 			cutoffback = tk.Frame(master=self.back)
 			cutoffback.bind("<KeyPress-q>", self.gui.quit_root)
 			cutoffback.place(relx=x, rely=self.relHeight, relheight=1, relwidth=w)
-			cutoffback.config(bg=Gui.mainColor)
+			cutoffback.config(bg=mainColor)
 			cutoffback.update()
 			return cutoffback
 
@@ -488,7 +525,7 @@ class FilterSection(Section):
 
 			# debug : commenting these three lines
 
-			# self.rots[ID].valueMax = 12700
+			self.rots[ID].valueMax = 512
 			# self.rots[ID].valuesTablePrompt = [i * 127 / self.rots[ID].valueMax
 			# for i in range(self.rots[ID].valueMax)]
 			# self.rots[ID].valuesTableSend = self.rots[ID].valuesTablePrompt
@@ -512,7 +549,7 @@ class EnvSection(Section):
 		super().__init__(gui)
 		self.name = "env"
 		self.titles = ['A', 'D']
-		self.titles.extend(['S', 'R'])
+		# self.titles.extend(['S', 'R'])
 
 		self.back = tk.Frame(master=self.mainBack)
 		self.configureBack()
@@ -524,12 +561,12 @@ class EnvSection(Section):
 
 	def configureBack(self):
 		self.back.bind("<KeyPress-q>", self.gui.quit_root)
-		relh = 160 / self.mainBack.winfo_height()
+		relh = 92 / self.mainBack.winfo_height()
 		relw = (354 - 235) / self.mainBack.winfo_width()
 		relx = 235 / self.mainBack.winfo_width()  # + 0.1
 		rely = 406 / self.mainBack.winfo_height()
 		self.back.place(relx=relx, rely=rely, relheight=relh, relwidth=relw)
-		self.back.config(bg="white")
+		self.back.config(bg="grey")
 		self.back.update()
 
 	def drawSection(self):
@@ -538,7 +575,7 @@ class EnvSection(Section):
 
 		relh = 70 / self.sectionH
 		relw = 1 / 2
-		self.drawGrid(relw, relh, 2, 2)
+		self.drawGrid(relw, relh, 2, 1)
 
 	def setTitle(self, ID):
 		try:
@@ -551,3 +588,123 @@ class EnvSection(Section):
 
 		if self.rots[ID].param == "":
 			self.rots[ID].param = title
+
+
+class SequencerFunctionsSection(Section):
+	def __init__(self, gui):
+		super().__init__(gui)
+		self.name = "seqfunc"
+		# self.titles = ['A', 'D']
+		# self.titles.extend(['S', 'R'])
+
+		self.back = tk.Frame(master=self.mainBack)
+		self.configureBack()
+
+		self.sectionH = self.back.winfo_height()
+		self.sectionW = self.back.winfo_width()
+
+		self.buttonTitles = [['+/- 5', '+/- 2', '+/- 1']]
+		self.buttonTitles.append(['12-ET', '8-ET', '12-JI', '8-JI'])
+		cprint(self.buttonTitles)
+
+		self.buttonsRange = []
+		self.buttonsQuant = []
+
+		self.drawSection()
+
+		for r in self.buttonsRange:
+			r.button.config(command=self.toggleRange)
+		self.buttonsRange[2].button.config(state=tk.ACTIVE)
+		#
+
+		self.toggleRange(sendEvent=False)
+		self.buttonsRange[2].button.select()
+
+		for q in self.buttonsQuant:
+			q.button.config(command=self.toggleQuantize)
+
+	def configureBack(self):
+		self.back.bind("<KeyPress-q>", self.gui.quit_root)
+		relh = 95 / self.mainBack.winfo_height()
+		relw = (354 - 235) / self.mainBack.winfo_width()
+		relx = 235 / self.mainBack.winfo_width()  # + 0.1
+		rely = (406 + 90) / self.mainBack.winfo_height()
+		self.back.place(relx=relx, rely=rely, relheight=relh, relwidth=relw)
+		self.back.config(bg="red")
+		self.back.update()
+
+	def drawSection(self):
+
+		r = tk.StringVar()
+		q = tk.StringVar()
+
+		self.createSectionTitle("Seq Functions")
+		# self.relHeight += 10 / self.sectionH
+		self.createSectionTitle("Range", lines=False, invert=False, fontsize=6)
+		self.drawButtons(width=35, rows=1, columns=3, canvasH=17, buttonH=16, var=r)
+		r.set("2")  # initialize
+		# self.relHeight += 10 / self.sectionH
+		self.createSectionTitle("Quantize", lines=False, invert=False, fontsize=6)
+		self.drawButtons(width=25, rows=1, columns=4, canvasH=17, buttonH=16, IDoffset=3, var=q)
+
+	def addButton(self, back, rel, buttonRel, **kwargs):
+		ID = kwargs['ID']
+		clkID = kwargs['clkID']
+		try:
+			IDoffset = kwargs['IDoffset']
+		except KeyError:
+			IDoffset = 0
+		try:
+			var = kwargs['var']
+		except KeyError:
+			var = None
+		if IDoffset == 0:
+			self.buttonsRange.append(Buttons.SeqRangeButton(back, rel, buttonRel, ID, self.buttonTitles[0], 7, var))
+		else:
+			self.buttonsQuant.append(Buttons.SeqQuantizeButton(back, rel, buttonRel, ID, self.buttonTitles[1], 7, var))
+
+	def toggleRange(self, **kwargs):
+		try:
+			sendEvent = kwargs['sendEvent']
+		except KeyError:
+			sendEvent = True
+
+		for b in self.buttonsRange:
+			if b.button['state'] == 'active':
+				# self.button.config(relief=tk.SUNKEN)
+				b.button.config(bg='black')
+				b.button.config(fg='white')
+				b.button.config(activebackground='grey25')
+				b.button.config(activeforeground='white')
+				b.dictToSend['state'] = 1
+				b.dictToSend['range'] = b.title[-1]
+				if sendEvent:
+					State.events.put(State.Event(b.eventName, b.dictToSend))
+			else:
+				b.button.config(bg='white')
+				b.button.config(fg='black')
+				b.button.config(activebackground='gray75')
+				b.button.config(activeforeground='black')
+
+	def toggleQuantize(self, **kwargs):
+		try:
+			sendEvent = kwargs['sendEvent']
+		except KeyError:
+			sendEvent = True
+
+		for b in self.buttonsQuant:
+			if b.button['state'] == 'active':
+				# self.button.config(relief=tk.SUNKEN)
+				b.button.config(bg='black')
+				b.button.config(fg='white')
+				b.button.config(activebackground='grey25')
+				b.button.config(activeforeground='white')
+				b.dictToSend['state'] = 1
+				b.dictToSend['quantize'] = b.title
+				if sendEvent:
+					State.events.put(State.Event(b.eventName, b.dictToSend))
+			else:
+				b.button.config(bg='white')
+				b.button.config(fg='black')
+				b.button.config(activebackground='gray75')
+				b.button.config(activeforeground='black')

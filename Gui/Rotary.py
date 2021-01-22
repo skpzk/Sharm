@@ -5,7 +5,8 @@ import queue
 from State import State
 from Gui import DrawUtils
 from Gui.ResizingCanvas import ResizingCanvas
-from Gui import Gui
+from Gui import Ui
+from Dev.DebugUtils import *
 
 
 class Rotary:
@@ -31,10 +32,13 @@ class Rotary:
 
 		# Value of the knob
 		self.value = 0
-		self.valueMax = 127.
-		self.valueMin = 0
-		self.valuesTablePrompt = [str(i) for i in range(int(self.valueMax) + 1)]
-		self.valuesTableSend = [i for i in range(int(self.valueMax) + 1)]
+		self._valueMax = 127.
+		self._valueMin = 0
+		self.valuesRange = self.valueMax - self.valueMin
+		self.valuesTablePrompt = []
+		self.valuesTableSend = []
+		self.setValuesTables()
+		self.promptValuesFromPromptTable = True
 
 		# arc parameters
 		self.alpha = 0
@@ -49,7 +53,7 @@ class Rotary:
 
 		self.canvas = ResizingCanvas(back, highlightthickness=0)
 		self.canvas.place(relx=rel[2], rely=rel[3], relwidth=rel[0], relheight=rel[1])
-		self.canvas.config(bg=Gui.mainColor)
+		self.canvas.config(bg=Ui.mainColor)
 		self.canvas.update()
 
 		width_canvas = rel[0] * self.back.winfo_width()
@@ -94,6 +98,31 @@ class Rotary:
 		self.oval = self.canvas.create_oval(coords)
 
 		self.canvas.addtag_all("all")
+
+	def setValuesTables(self):
+		self.valuesTablePrompt = [str(i) for i in range(int(self._valueMin), int(self._valueMax) + 1)]
+		# cprint("ValuesTablePrompt = ", self.valuesTablePrompt)
+		self.valuesTableSend = [i for i in range(int(self._valueMin), int(self._valueMax) + 1)]
+
+	@property
+	def valueMax(self):
+		return self._valueMax
+
+	@valueMax.setter
+	def valueMax(self, v):
+		self._valueMax = v
+		self.valuesRange = self.valueMax - self.valueMin
+		self.setValuesTables()
+
+	@property
+	def valueMin(self):
+		return self._valueMin
+
+	@valueMin.setter
+	def valueMin(self, v):
+		self._valueMin = v
+		self.valuesRange = self.valueMax - self.valueMin
+		self.setValuesTables()
 
 	def updateSizeValues(self):
 		# updates self.r and self.center values
@@ -148,12 +177,12 @@ class Rotary:
 	def setValue(self, value, sendMidiEvent=False):
 		self.value = self.valuesTableSend.index(value)
 
-		self.alpha_deg = np.round(self.value*280 / self.valueMax)
+		self.alpha_deg = np.round((self.value - self.valueMin)*self.arc_extent / self.valuesRange)
 
 		self.computeAlphaFromAlphadeg()
 
 		self.redraw_line()
-		self.canvas.itemconfigure(self.label, text=self.valuesTablePrompt[int(self.value)])
+		self.canvas.itemconfigure(self.label, text=self.valueToPrompt(self.value))
 		if sendMidiEvent:
 			State.events.put(State.Event(self.param, self.valueToSend()))
 
@@ -171,17 +200,30 @@ class Rotary:
 			alpha_deg = self.arc_extent
 
 		# discrete rotation adapted to max value :
-		value = np.round(alpha_deg * self.valueMax / 280.)
-		alpha_deg = np.round(value*280 / self.valueMax)
+		value = np.round(alpha_deg * self.valuesRange / self.arc_extent) + self.valueMin
+		alpha_deg = np.round((value - self.valueMin) * self.arc_extent / self.valuesRange)
 
 		self.alpha_deg = alpha_deg
 		self.computeAlphaFromAlphadeg()
 
 	def updateValue(self):
 
-		self.value = np.round(self.value * self.valueMax / 280.)
-		self.canvas.itemconfigure(self.label, text=self.valuesTablePrompt[int(self.value)])
+		self.canvas.itemconfigure(self.label, text=self.valueToPrompt(self.value))
 		State.events.put(State.Event(self.param, self.valueToSend()))
+
+	def valueToPrompt(self, value):
+		# cprint("Value = ", value)
+		# cprint("Values table prompt = ", self.valuesTablePrompt)
+		# cprint("Table length = ", len(self.valuesTablePrompt))
+		if self.promptValuesFromPromptTable:
+			return self.valuesTablePrompt[int(value)]
+		else:
+			return self.value
+
+	def valueFromAlpha_deg(self, alpha_deg):
+		value = np.round(alpha_deg * self.valuesRange / self.arc_extent) + self.valueMin
+		# cprint("Value = ", value)
+		return value
 
 	def bindMotion(self, posn):
 		self.cx = posn.x
@@ -192,7 +234,7 @@ class Rotary:
 			self.canvas.focus_set()
 			self.computeAlphaFromCursor()
 			self.redraw_line()
-			self.value = self.alpha_deg
+			self.value = self.valueFromAlpha_deg(self.alpha_deg)
 			self.updateValue()
 
 	def bindPressed(self, posn):
@@ -214,7 +256,7 @@ class Rotary:
 			if pressed:
 				self.computeAlphaFromCursor()
 				self.redraw_line()
-				self.value = self.alpha_deg
+				self.value = self.valueFromAlpha_deg(self.alpha_deg)
 
 				self.updateValue()
 		else:
@@ -224,13 +266,13 @@ class Rotary:
 	def bindArrowKey(self, direction):
 		self.cursor_on_rotary()
 		if self.cursorOn or self.canvas.focus_get():
-			alpha_deg = self.alpha_deg + direction * self.arc_extent / self.valueMax
+			alpha_deg = self.alpha_deg + direction * self.arc_extent / self.valuesRange
 			alpha_deg = (alpha_deg >= self.arc_extent) * self.arc_extent + (alpha_deg < self.arc_extent) * alpha_deg
 			alpha_deg = (alpha_deg > 0) * alpha_deg
 			self.alpha_deg = alpha_deg
 			self.computeAlphaFromAlphadeg()
 			self.redraw_line()
-			self.value = self.alpha_deg
+			self.value = self.valueFromAlpha_deg(self.alpha_deg)
 
 			self.updateValue()
 

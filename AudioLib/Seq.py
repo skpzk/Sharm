@@ -1,122 +1,100 @@
-from Gui import Gui
+from Gui import Ui
 from State import State
 from AudioLib.Utils import *
+from AudioLib.Audio import AudioConstTest as AudioConst
+from Dev.DebugUtils import *
 
 
-class Seq:
-	def __init__(self, audio, vcf, div, ID):
+class Seq(AudioConst):
+	def __init__(self, audioPatch, ID):
 
-		self.div = div
-		self.audio = audio
-		self.vcf = vcf
+		# self.div = div
+
+		self.vcf = audioPatch.vcf
 
 		self.steps = 4
 		self.currentStep = 0
 		self.lastStep = 0
-		self.notes = [69, 69, 69, 69]
+		# self.divs = [1] * 4
+		self.notes = [0.] * 4
+		# self.currentDiv = 1
+		self.currentNote = 0
 
 		self.called = False
-		self.lastNote = 0
-		self.lastDiv = 1
 		self.ID = ID
+		# cprint(ID)
 		self.state = None
+		self.range = 1
 
-		self.voices = []
-		self.divVoices = []
+		if ID == 1:
+			self.vco = audioPatch.vco1
+			self.sub1 = audioPatch.sub1vco1
+			self.sub2 = audioPatch.sub2vco1
+			self.env = audioPatch.envVco1
+		else:
+			self.vco = audioPatch.vco2
+			self.sub1 = audioPatch.sub1vco2
+			self.sub2 = audioPatch.sub2vco2
+			self.env = audioPatch.envVco2
 
 	def callback(self):
 		if not self.called:
 			self.called = True
 
-			self.divOff()
+			# send signal to Ui to change
+			# the color of the last step to black
 			d = dict()
 			d['type'] = 'seqnote'
 			d['seqid'] = self.ID
 			d['step'] = self.lastStep
-			Gui.events.put(State.Event('note off', d))
+			Ui.events.put(State.Event('note off', d))
 
-			div = self.notes[self.currentStep]
+			# div = self.divs[self.currentStep]
+			note = self.notes[self.currentStep]
 
-			self.lastDiv = div
+			# cprint("note = ", note, "\nrange = ", self.range)
+			note = note * self.range
+
 			self.lastStep = self.currentStep
 			self.currentStep = np.mod(self.currentStep + 1, 4)
 
-			self.divOn(div)
+			# self.setDiv(div)
+			self.setNote(note)
+			# self.currentDiv = div
+			self.currentNote = note
 
+			# send signal to Ui to change
+			# the color of the last step to black
 			d = dict()
 			d['type'] = 'seqnote'
 			d['seqid'] = self.ID
 			d['step'] = self.lastStep
-			Gui.events.put(State.Event('note on', d))
+			Ui.events.put(State.Event('note on', d))
 
 			self.called = False
 
-	def noteOn(self, note):
-		for voice in self.voices:
-			voice.on(note)
+	def setNoteFromState(self, noteInt: int, stepID: int):
+		note = (float(noteInt) - 1200.) / 100.
+		stepID = int(stepID - 1)
+		self.notes[stepID] = note
 
-	def noteOff(self, note):
-		for voice in self.voices:
-			voice.off(note)
-
-	def divOn(self, div):
+	def setDiv(self, div):
 		self.vcf.on()
-		for voice in self.voices:
-			if voice.ID <= 2:
-				if voice in self.divVoices:
-					freq = mtof(voice.baseNote)
-					freqDiv = freq / div
-					note = ftom(freqDiv)
-					voice.lastNote = note
-					voice.on(note)
-					self.voices[1].setMasterNote(note)
-					self.voices[2].setMasterNote(note)
-				else:
-					pass
-			else:
-				if (voice not in self.divVoices) and (self.voices[0] in self.divVoices):
-					voice.lastNote = note = voice.baseNote
-					voice.on(note)
+		self.vco.setDiv(div, True)
+		self.sub1.setDiv(div, True)
+		self.sub2.setDiv(div, True)
+		self.env.on()
 
-				elif voice in self.divVoices:
-					voice.setDiv(div)
-					voice.lastNote = note = voice.baseNote
-					voice.on(note)
+	def setNote(self, note):
 
-				else:
-					pass
+		self.vcf.on()
+		self.vco.setNote(note, True)
+		# self.sub1.setNote(note, True)
+		# self.sub2.setNote(note, True)
+		self.env.on()
 
-	def divOff(self):
-		for voice in self.voices:
-			if voice.ID <= 2:
-				if voice in self.divVoices:
-					voice.off(voice.lastNote)
-				else:
-					pass
-			else:
-				if (self.voices[0] not in self.divVoices) and (voice not in self.divVoices):
-					pass
-				else:
-					voice.off(voice.lastNote)
+	def call(self):
+		return np.ones(self.CHUNK) * self.currentNote
 
-	def addVoice(self, voice):
-		if voice not in self.divVoices:
-			if voice.ID > 2:
-				voice.fallbackDiv = voice.div
-			self.divVoices.append(voice)
-		else:
-			pass
-
-	def removeVoice(self, voice):
-		if voice in self.divVoices:
-			self.divVoices.remove(voice)
-			if voice.ID > 2:
-				voice.div = voice.fallbackDiv
-		else:
-			pass
-
-	def toggleVoice(self, voice, state):
-		if state == 0:
-			self.addVoice(voice)
-		else:
-			self.removeVoice(voice)
+	def setRange(self, seqrange):
+		self.range = int(seqrange)

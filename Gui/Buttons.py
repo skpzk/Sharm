@@ -1,7 +1,9 @@
 import tkinter as tk
 from State import State
 from abc import ABC
-from Gui import Gui
+from Gui import Ui
+
+from Dev.DebugUtils import *
 
 
 class Button(ABC):
@@ -24,7 +26,7 @@ class Button(ABC):
 
 		self.canvas = tk.Canvas(self.back, highlightthickness=0)
 		self.canvas.place(relx=relx, rely=rely, relwidth=relw, relheight=relh)
-		self.canvas.configure(bg=Gui.mainColor)
+		self.canvas.configure(bg=Ui.mainColor)
 
 	def toggle(self, **kwargs):
 		try:
@@ -89,10 +91,7 @@ class RythmButton(Button):
 
 class VcoButton(Button):
 	def __init__(self, back, rel, buttonrel, ID, voiceID, titles):
-		if ID < 3:
-			seqID = 1
-		else:
-			seqID = 2
+		seqID = 0
 		super().__init__(back, rel, seqID, ID)
 
 		self.button = tk.Button(self.canvas, text=titles[ID].capitalize(),
@@ -115,3 +114,85 @@ class VcoButton(Button):
 		self.eventName = 'assign' + str(self.seqID) + str(self.buttonID)
 
 		self.button.config(command=self.toggle)
+
+
+class SeqRangeButton(Button):
+	def __init__(self, back, rel, buttonrel, ID, titles, fontsize, v):
+		super().__init__(back, rel, 0, ID)
+		MODES = [
+		        ("+/- 5", "5"),
+		        ("+/- 2", "2"),
+		        ("+/- 1", "1")]
+		b = tk.Radiobutton(self.canvas, text=MODES[ID][0],
+		                   variable=v, value=MODES[ID][1],
+		                   indicatoron=0, bg='white', activebackground='white',
+		                   activeforeground='black', highlightthickness=1, relief=tk.FLAT, borderwidth=0)
+		buttonRelW, buttonRelH = buttonrel
+		b.place(relwidth=buttonRelW, relheight=buttonRelH, relx=0.5, rely=0.5,
+		        anchor=tk.CENTER)
+		b.config(font=("Purisa", fontsize))
+		self.button = b
+		self.dictToSend['buttontype'] = 'range'
+		self.eventName = 'range'
+		self.title = titles[ID]
+		self.toggle(state=1, sendEvent=False)
+		# self.button.config(command=self.toggle)
+		self.button.config(selectcolor='black')
+		self.button.select()
+
+
+class SeqQuantizeButton(Button):
+	def __init__(self, back, rel, buttonrel, ID, titles, fontsize, v):
+		super().__init__(back, rel, 0, ID)
+		MODES = [('12-ET', "0"),
+		         ('8-ET', '1'),
+		         ('12-JI', '2'),
+		         ('8-JI', '3')]
+		b = tk.Radiobutton(self.canvas, text=MODES[ID][0],
+		                   variable=v, value=MODES[ID][1],
+		                   indicatoron=0, bg='white', activebackground='black',
+		                   activeforeground='white', highlightthickness=1, relief=tk.FLAT, borderwidth=0)
+		buttonRelW, buttonRelH = buttonrel
+		b.place(relwidth=buttonRelW, relheight=buttonRelH, relx=0.5, rely=0.5,
+		        anchor=tk.CENTER)
+		b.config(font=("Purisa", fontsize))
+		# b.config(command=self.toggle)
+		self.button = b
+		self.eventName = 'quantize'
+		self.title = titles[ID]
+
+		self.toggle(state=1, sendEvent=False)
+		# self.button.config(command=self.toggle)
+		self.button.config(selectcolor='black')
+		self.button.select()
+
+
+class SeqQuantizeButtonOld(Button):
+	def __init__(self, back, rel, buttonrel, ID, titles, fontsize):
+		if ID < 3:
+			seqID = 1
+		else:
+			seqID = 2
+		super().__init__(back, rel, seqID, ID)
+
+		self.button = tk.Button(self.canvas, text=titles[ID].capitalize(),
+		                        bg='white', activebackground='white',
+		                        activeforeground='black', highlightthickness=1, relief=tk.FLAT)
+		buttonRelW, buttonRelH = buttonrel
+		self.button.place(relwidth=buttonRelW, relheight=buttonRelH, relx=0.5, rely=0.5, anchor=tk.CENTER)
+		self.button.config(font=("Purisa", fontsize))
+
+		self.title = titles[ID]
+
+		self.toggle(state=1, sendEvent=False)
+
+		self.dictToSend['id'] = self.buttonID
+
+		self.dictToSend['buttontype'] = 'seqquantize'
+
+		self.eventName = 'quantize'
+
+		self.button.config(command=self.toggle)
+
+		if ID == 0:
+			self.toggle()

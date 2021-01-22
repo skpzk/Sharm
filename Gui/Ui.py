@@ -3,14 +3,17 @@ import tkinter as tk
 import queue
 
 from State import State
-from Gui import Sections
 
-# import PatchBay  # will be used in a future version
+# debug : moved here to break circular imports during test
+mainColor = 'white'
+
+from Gui import Sections
+from Gui import PatchBay  # will be used in a future version
+from Dev.DebugUtils import *
 
 events = multiprocessing.Queue(maxsize=10)
 
 COLORS = True
-mainColor = 'white'
 
 
 class Gui:
@@ -28,6 +31,9 @@ class Gui:
 		self.generalSection = Sections.GeneralSection(self)
 		self.filterSection = Sections.FilterSection(self)
 		self.envSection = Sections.EnvSection(self)
+		self.seqfuncSection = Sections.SequencerFunctionsSection(self)
+
+		self.patchBay = PatchBay.PatchBay(root)  #, self.back)
 
 		self.sections = [self.rhythmSection,
 		                 self.vcoSection,
@@ -45,10 +51,11 @@ class Gui:
 	def configureRoot(self):
 		self.root.title('Sharm')
 		# self.root.geometry("900x600+0+0")  # geometry when Patchbay is used
-		w = 605
+		w = 605  # geometry when Patchbay is not used
+		w = 900
 		h = 600
-		geom = str(w) + 'x' + str(h) + '+500+10'
-		self.root.geometry(geom)  # geometry when Patchbay is not used
+		geom = str(w) + 'x' + str(h) + '+10+10'
+		self.root.geometry(geom)
 
 		# get screen size to allow resizing
 		screenW = self.root.winfo_screenwidth()
@@ -59,6 +66,9 @@ class Gui:
 		self.root.aspect(w, h, w, h)  # force fixed aspect ratio
 		self.root.minsize(int(w / 2), int(h / 2))  # force minimum size
 		self.root.maxsize(int(ratio * w), int(ratio * h))  # force maximum size and prevents maximizing
+		# debug: temporarily not resizable
+		self.root.resizable(0, 0)
+
 
 	def configureBack(self):
 		self.back.pack_propagate(0)
@@ -182,10 +192,20 @@ class Gui:
 			value = valuesDict['value']
 		else:
 			value = None
-		if valuesDict['type'] != 'rot':
+
+		# cprint(valuesDict)
+		if valuesDict['type'] == 'button':
 			self.applyToGuiButton(valuesDict)
-		else:
+		elif valuesDict['type'] == 'rot':
 			self.applyToGuiRot(valuesDict, value)
+		elif valuesDict['type'] == 'patchbay':
+			t1 = valuesDict['out']
+			t2 = valuesDict['in']
+			if valuesDict['connect']:
+				cprint(valuesDict)
+				self.patchBay.connect(t1, t2)
+			# cprint("can't read message:")
+			# cprint(valuesDict)
 
 	def applyToGuiButton(self, valuesDict):
 		# print(valuesDict)
@@ -220,3 +240,35 @@ class Gui:
 
 		elif valuesDict['rottype'] == 'filter':
 			self.filterSection.rots[ID].setValue(value)
+
+
+if __name__ == "__main__":
+
+	import threading
+	from Dev.DebugUtils import *
+
+	running = True
+
+	def init_gui():
+		global running
+
+		root = tk.Tk()
+		gui = Gui(root)
+
+		root.mainloop()
+		running = False
+		cprint("closed!")
+
+
+	GUI = threading.Thread(target=init_gui)
+	GUI.start()
+
+	cprint("init done")
+
+	while running:
+		try:
+			State.events.get(block=True, timeout=0.5)
+		except queue.Empty:
+			pass
+
+	GUI.join()

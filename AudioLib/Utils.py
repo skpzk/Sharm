@@ -34,6 +34,12 @@ def notesList():
 	return namesList
 
 
+def trim(data, lims):
+	data = (data > lims[0]) * data + lims[0] * (data <= lims[0])
+	data = (data < lims[1]) * data + lims[1] * (data >= lims[1])
+	return data
+
+
 def ssat(data, lim=1. / 16.):
 	return (abs(data) <= lim) * data + np.sign(data) * (abs(data) > lim) * lim
 

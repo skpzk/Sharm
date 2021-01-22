@@ -20,7 +20,7 @@ class MasterClk:  # frequency range is 1/3Hz - 50Hz
 
 		self.elapsed = 0
 
-	def setRateMidi(self, rate):
+	def setRate(self, rate):
 		f = self.calcRateMidi(rate)
 		f = f * self.minFreq / self.calcRateMidi(0)
 		self.f = f
