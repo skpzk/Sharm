@@ -1,5 +1,14 @@
 # Sharm
 Sharm is an attempt to copy the behaviour of the Moog Shubharmonicon synthetizer.
+An improved version is actively developed. 
+
+### Coming soon:
+- new and improved Ui with Qt, antialiasing and brand new dark theme
+- transport controls
+- fully functional patchbay
+- entirely rewritten audio library with antialiased square and saw wave
+- behaviour closer to the subharmonicon (as well as I can understand from the user manual)
+- midi integration
 
 ### Set up:
 Clone the repo
