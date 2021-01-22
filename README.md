@@ -6,7 +6,7 @@ An improved version is actively developed.
 - new and improved Ui with Qt, antialiasing and brand new dark theme
 - transport controls
 - fully functional patchbay
-- entirely rewritten audio library
+- entirely rewritten audio library with antialiased square and saw wave
 - behaviour closer to the subharmonicon (as well as I can understand from the user manual)
 - midi integration
 
