@@ -1,0 +1,6 @@
+numpy~=1.19.5
+setuptools~=51.1.0
+PySide6~=6.0.0
+scipy~=1.6.0
+Cython~=0.29.21
+sounddevice~=0.4.1
