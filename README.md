@@ -41,11 +41,12 @@ Run main.py in your terminal
 ```
 ### Short user guide:
 * To close the main window, use the close button or press q.
-* All parameters are saved in the file "State/state.sharm" when the window is closed.
+* All parameters are saved in the file "state/state.sharm" when the window is closed.
 * You can change the value of knobs using your mouse.
 * You can also click on the title or the value of the knob and use arrow keys to change the value.
-* On every knob, you can press m  ot double click to set its value to 0 (and press m again or double clock to restore the previous value)
+* On every knob, you can press m or double click to set its value to 0 (and press m again or double click to restore the previous value)
 * When a knob is selected, its value is colored in red, press Esc to deselect it.
+* Press spacebar to activate/deactivate Play.
 
 ### Improvements to come:
 * Some patchpoints are not active yet (they are indicated by a light grey circle), they will be in a future version
