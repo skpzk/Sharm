@@ -1,9 +1,5 @@
 from PySide6 import QtGui, QtCore
-from PySide6.QtWidgets import QApplication, QHBoxLayout, QPushButton, QGroupBox, QGridLayout
-from PySide6.QtCore import Qt, QSize
-
-
-from gui.minimal_window_for_test import Window
+from PySide6.QtCore import Qt
 
 import PySide6.QtWidgets as Qtw
 
@@ -12,7 +8,6 @@ from state.State import State
 implementedButtons = ['Play', 'Seq1', 'Seq2', 'Vco1', 'Vco2', 'Sub1', 'Sub2', 'Next', 'Reset', 'EG']
 
 
-# class Button(Qtw.QPushButton):
 class Button(Qtw.QAbstractButton):
 	def __init__(self, title: str):
 		# super(Button, self).__init__(title)

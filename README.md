@@ -1,30 +1,54 @@
-# Sharmv2
-Sharmv2 is a recreation of Sharm, with knowledge acquired during development of Marble
+# Sharm
+Sharm is an attempt to copy the behaviour of the Moog Shubharmonicon synthetizer.
 
-I am currently coding a brand new interface with Qt instead of Tkinter.
-The goal is to have a resizeable interface with improved and antialiased widgets.
 
-In addition, the audio lib is now modular, to ease the integration of a Patchbay. 
-The oscillators are also improved, with an implementation of the blep algorithm in order to remove aliasing with high frequencies.
+### Set up:
 
-To do before release:
-- finish patchbay
-- solve bug with multiple patchcords : can't reproduce bug
-- solve bug with dict in patchbay : seems to be solved
-- a bit of cleaning and commenting
-- don't give focus to knob 1 on startup
-- bug with clock : sometimes a delay is added btw two steps : why ?
+Note : As Sharm is written in Python, my pc was not able to run everything fast enough, so the filter and some functions are written in Cython (ie. C extensions for Python, see https://cython.org/). In the future, I may add precompiled wheels for evey distribution, and a branch without cython for faster computers.
 
-tbd later:
-- make wheels package for cython modules (and maybe branch without cython) : tbd later
-- implement blep or blit for tri wave : tbd later
+Clone the repo
+Create a new virtual environment (use your version of python, it should run at least on 3.7-3.9)
+```console
+$ virtualenv --python=python3.9 venv
+```
+Activate it
+```console
+$ source venv/bin/activate
+```
+Install the packages into it from the requirements file
+```console
+(venv) $ pip install -r requirements.txt
+```
+Move to the directory containing cython extensions:
+```console
+(venv) $ cd audioLib/objects/cython
+```
+Compile the audio filter:
+```console
+(venv) $ python setupCFilter.py build_ext --inplace
+```
+Compile other audio functions:
+```console
+(venv) $ python setupCythonUtils.py build_ext --inplace
+```
+Move back to the root directory of Sharm
+```console
+(venv) $ cd ../../..
+```
+Run main.py in your terminal
+```console
+(venv) $ python main.py
+```
+### Short user guide:
+* To close the main window, use the close button or press q.
+* All parameters are saved in the file "State/state.sharm" when the window is closed.
+* You can change the value of knobs using your mouse.
+* You can also click on the title or the value of the knob and use arrow keys to change the value.
+* On every knob, you can press m  ot double click to set its value to 0 (and press m again or double clock to restore the previous value)
+* When a knob is selected, its value is colored in red, press Esc to deselect it.
 
-Finishing Patchbay:
-- play in : replace with s&h linked to clock
-- reset in
-- trigger out
+### Improvements to come:
+* Some patchpoints are not active yet (they are indicated by a light grey circle), they will be in a future version
+* As of now, there is no midi integration, there will be an option to use a midi keyboard and a midi clock via the patchbay, and to set midi control change to knobs.
 
-Done: 
-- clk seq 1 and 2 : replace with square wave changing value on each trigger
-- seq1&2 in
-
+![Interface of the synth](gui/images/SharmGuiv2.png)
