@@ -1,3 +1,5 @@
+from os.path import join
+
 from PySide6 import QtCore, QtGui
 from PySide6.QtWidgets import QMainWindow, QApplication, QWidget, QHBoxLayout, QVBoxLayout
 from PySide6.QtCore import QEvent
@@ -42,7 +44,8 @@ class Window(QMainWindow):
 		centralWidget.setLayout(layout)
 
 		self.setWindowTitle("Sharm v2")
-		self.setWindowIcon(QtGui.QIcon("gui/images/icon.svg"))
+		path = join("gui", "images", "icon.svg")
+		self.setWindowIcon(QtGui.QIcon(path))
 		# self.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.FramelessWindowHint)
 		self.setFocus()
 
