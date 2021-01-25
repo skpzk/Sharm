@@ -1,5 +1,5 @@
 # Sharm
-Sharm is an attempt to copy the behaviour of the Moog Shubharmonicon synthetizer.
+Sharm is an attempt to copy the behaviour of the Moog Shubharmonicon synthesizer.
 
 
 ### Set up:
