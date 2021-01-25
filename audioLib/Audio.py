@@ -1,4 +1,5 @@
 import queue
+import time
 
 import numpy as np
 import sounddevice as sd
@@ -63,10 +64,18 @@ class Audio:
 		self.stream.stop()
 		self._isOn = False
 		self.runQueue.join()
+		time.sleep(1)
 
 		# empty queue to stop all threads correctly
 		while not self.playback_frames.empty():
 			self.playback_frames.get()
+
+		# windows is not happy with me trying to stop the queue
+		# so this raises an error sometimes, but not always
+		# not sure why, though
+		self.playback_frames.close()
+		self.playback_frames.join_thread()
+
 
 	def _run(self):
 		out = np.expand_dims(np.zeros(AudioConst.CHUNK), axis=1)

@@ -22,4 +22,4 @@ class Sharm:
 		State().save()
 		self.audio.stop()
 
-		return self.audio.T
+		# return self.audio.T

@@ -1,3 +1,4 @@
+import threading
 import time
 
 from PySide6.QtCore import QSize
@@ -174,7 +175,13 @@ if __name__ == "__main__":
 
 	print("Init done.")
 
-
 	app.exec_()
 
-	T = sharm.close()
+	sharm.close()
+	# checking for threads
+	main_thread = threading.current_thread()
+	for t in threading.enumerate():
+		if t is main_thread:
+			continue
+		print('joining %s', t.getName())
+		t.join()
