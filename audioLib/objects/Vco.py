@@ -6,8 +6,6 @@ from audioLib.objects.Patchbay import PatchPoint
 from audioLib.utils.Utils import *
 from state.State import State
 
-from audioLib.objects.cython import cython_utils as cu
-
 
 TABLELENGTH = 500000
 firstHalfTable = int(np.floor(TABLELENGTH / 2))
@@ -220,15 +218,15 @@ class Vco(Osc):
 		self.sequence = buf.copy()
 
 		if self.seqassign:
-			cu.add_freq_note_and_range2D(self.freq, buf, self.range * 12)
+			self.freq = mtof(ftom(self.freq) + buf * self.range * 12)
 
 		buf.fill(0)
 
 		self.inputs.vco(buf)
 
-		cu.add_freq_note_and_range2D(self.freq, buf, self.range * 12)
+		self.freq = mtof(ftom(self.freq) + buf * self.range * 12)
 
-		cu.quantize2D(self.freq, self.quantizeValue)
+		self.freq = quantize2D(self.freq, self.quantizeValue)
 
 
 	def checkValues(self):

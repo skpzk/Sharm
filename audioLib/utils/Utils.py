@@ -96,7 +96,7 @@ def quantJI(freq, scale="chromatic"):
 		ratios = np.array([1, 9/8, 5/4, 4/3, 3/2, 5/3, 15/8])
 	ratios.sort()
 
-	# find the closest A frequence under freq
+	# find the closest A frequency under freq
 	baseratio = (freq >= 440) * np.floor(freq / 440) + (freq < 440) * 1 / np.ceil(440 / freq)
 	# print("baseratio.shape()", baseratio.shape)
 	# baseratio = np.expand_dims(baseratio, axis=1)
@@ -113,6 +113,29 @@ def quant12JI(freq):
 
 def quant8JI(freq):
 	return quantJI(freq, "diatonic")
+
+def quantize2D(freq, value):
+	# value : 0 = 12ET, 1 = 8ET, 2 = 12JI, 2 = 8JI
+	notes8ET = [0, 2, 4, 5, 7, 9, 11, 12]
+
+	if value == 0:
+
+		return mtof(np.round(ftom(freq)))
+	if value == 1:
+		note = np.round(ftom(freq))
+		position = np.mod(note - 69, 12)
+		scaled = note - position
+		scaled = np.repeat(np.expand_dims(np.array(notes8ET), axis=0), len(freq[:, 0]), axis=0) \
+		         + np.repeat(scaled, len(notes8ET), axis=1)
+		scaled = find_nearest(scaled, note)
+		freq = mtof(scaled)
+		return freq
+	if value==2:
+		return quantJI(freq)
+	if value==3:
+		return quantJI(freq, "diatonic")
+
+	return freq
 
 
 def simpleNotesList():
@@ -160,14 +183,3 @@ def empty1DChunk():
 def emptyIntChunk():
 	return np.expand_dims(np.zeros(AudioConst.CHUNK, dtype='int'), axis=1)
 
-if __name__ == "__main__":
-	# freqs = np.linspace(440, 880, 10)
-	# Equal temperament :
-	freqs = 440 * np.logspace(0, 12, num=5, base=np.power(2, 1/12))
-
-	print(freqs)
-	freqs = np.expand_dims(freqs, axis=1)
-	# quant12JI(np.array([110, 220, 440, 880, 1760]))
-	print("final result : ", quant12JI(freqs).shape)
-	# print(quant8JI(freqs))
-	# quant12JI(np.array([440, 459]))

@@ -119,42 +119,19 @@ def quantize2D(freq, value):
 			cfreq[i] = A440 * pow(ETConst, scaled)
 	if quant == 2:
 		for i in range(len(cfreq)):
-			# find closest A
-#			if cfeq[i] == 0:
-#				print("cfreq[i] == 0 for some reason")
-#			print("ceil(440. / cfreq[i]) = ", ceil(440. / cfreq[i]))
-#			baseA = (((cfreq[i] >= 440.) * floor(cfreq[i]  / 440.) + (cfreq[i] < 440.) * 1. / ceil(440. / cfreq[i])))*440
-#			print(baseA)
-#			print("negative power : ", pow(2, -1))
+
 			baseA = 440 * pow(2, floor(log(cfreq[i] / 440) / log(2)))
-#			print(baseA)
-			# find closest ratio
+
 			scaledFreq = baseA * 2
-#			j = 0
-#			print("len ratios   = ", len(ratios12JI))
-#			print("range ratios = ", range(len(ratios12JI) - 1))
 			for j in range(len(ratios12JI) - 1):
-#				print("j = ", j)
-#				print("freq = ", cfreq[i])#, end="")
-#				print(", j = ", j)#, end="")
-#				print(", ratios = %.2f, %.2f" %(ratios12JI[j], ratios12JI[j+1]))#, end="")
-#				print(", distance down = % 3.2f" % fabs(cfreq[i] - ratios12JI[j] * baseA))#, end="")
-#				print(", distance up = % 3.2f" % fabs(cfreq[i] - ratios12JI[j+1] * baseA))
 				if fabs(cfreq[i] - ratios12JI[j] * baseA) <= fabs(cfreq[i] - ratios12JI[j+1] * baseA):
-#					print("closest match : ", ratios12JI[j])
 					scaledFreq = ratios12JI[j] * baseA
-#					print("scaled freq = ", scaledFreq)
 					break
 			cfreq[i] = scaledFreq
 	if quant == 3:
 		for i in range(len(cfreq)):
-			# find closest A
-#			baseA = (((cfreq[i] >= 440.) * floor(cfreq[i]  / 440.) + (cfreq[i] < 440.) * 1. / ceil(440. / cfreq[i])))*440
 			baseA = 440 * pow(2, floor(log(cfreq[i] / 440) / log(2)))
-#			print(baseA)
-			# find closest ratio
-#			scaledFreq = 440
-			scaledFreq = baseA * 2
+#			scaledFreq = baseA * 2
 			for j in range(len(ratios12JI) - 1):
 				if fabs(cfreq[i] - ratios8JI[j] * baseA) <= fabs(cfreq[i] - ratios8JI[j+1] * baseA):
 					scaledFreq = ratios8JI[j] * baseA

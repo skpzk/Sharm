@@ -1,10 +1,11 @@
 # Sharm
-Sharm is an attempt to copy the behaviour of the Moog Shubharmonicon synthetizer.
+Sharm is an attempt to copy the behaviour of the Moog Shubharmonicon synthesizer.
+Note : This branch is without cython extensions, so it should run slower than the main branch but you don't have to compile anything. 
+If you experience many underruns, try changing the buffer size in the line 14 of audioLib/Audio.py.
 
+As of now this branch is not fully functional, the cython filter extension in not removed yet.
 
 ### Set up:
-
-Note : As Sharm is written in Python, my pc was not able to run everything fast enough, so the filter and some functions are written in Cython (ie. C extensions for Python, see https://cython.org/). In the future, I may add precompiled wheels for evey distribution, and a branch without cython for faster computers.
 
 Clone the repo
 ```console
@@ -25,22 +26,6 @@ $ source venv/bin/activate
 Install the packages into it from the requirements file
 ```console
 (venv) $ pip install -r requirements.txt
-```
-Move to the directory containing cython extensions:
-```console
-(venv) $ cd audioLib/objects/cython
-```
-Compile the audio filter:
-```console
-(venv) $ python setupCFilter.py build_ext --inplace
-```
-Compile other audio functions:
-```console
-(venv) $ python setupCythonUtils.py build_ext --inplace
-```
-Move back to the root directory of Sharm
-```console
-(venv) $ cd ../../..
 ```
 Run main.py in your terminal
 ```console

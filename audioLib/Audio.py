@@ -10,9 +10,6 @@ from audioLib.objects.AudioObject import AudioObject
 from audioLib.objects.Clock import Clock
 
 
-
-
-
 class Audio:
 	playback_frames = multiprocessing.Queue(maxsize=20)
 	def __init__(self):
@@ -52,7 +49,7 @@ class Audio:
 			if not self.playback_frames.empty():
 				out[:] = self.playback_frames.get(block=False)
 			else:
-				print("Underrun")
+				# print("Underrun")
 				out.fill(0)
 				pass
 
