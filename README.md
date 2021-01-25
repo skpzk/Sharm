@@ -3,8 +3,6 @@ Sharm is an attempt to copy the behaviour of the Moog Shubharmonicon synthesizer
 Note : This branch is without cython extensions, so it should run slower than the main branch but you don't have to compile anything. 
 If you experience many underruns, try changing the buffer size in the line 14 of audioLib/Audio.py.
 
-As of now this branch is not fully functional, the cython filter extension in not removed yet.
-
 ### Set up:
 
 Clone the repo

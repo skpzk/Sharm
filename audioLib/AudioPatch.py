@@ -9,7 +9,7 @@ from audioLib.objects.Vca import Vca
 from audioLib.objects.Vco import Vco, Sub1
 
 
-from audioLib.objects.cython import CFilter
+from audioLib.objects.Filter import Vcf
 
 class AudioPatch:
 	def __init__(self):
@@ -80,7 +80,7 @@ class AudioPatch:
 		patchbay.outs.vco2sub1 = vco2sub1.CVOutput
 		patchbay.outs.vco2sub2 = vco2sub2.CVOutput
 
-		filter = CFilter.CVcf()
+		filter = Vcf()
 
 		vca = Vca()
 		vca.inputs.filter = filter
