@@ -4,7 +4,8 @@ Sharm is an attempt to copy the behaviour of the Moog Shubharmonicon synthesizer
 
 ### Set up:
 
-Note : As Sharm is written in Python, my pc was not able to run everything fast enough, so the filter and some functions are written in Cython (ie. C extensions for Python, see https://cython.org/). In the future, I may add precompiled wheels for evey distribution, and a branch without cython for faster computers.
+Note : As Sharm is written in Python, my pc was not able to run everything fast enough, so the filter and some functions are written in Cython (ie. C extensions for Python, see https://cython.org/). 
+In the future, I may add precompiled wheels for evey distribution. In the meantime, if your computer is fast enough, there is a [https://github.com/skpzk/Sharm/tree/withoutCython][version of Sharm without cython]
 
 Clone the repo
 ```console
@@ -53,10 +54,13 @@ Run main.py in your terminal
 * You can also click on the title or the value of the knob and use arrow keys to change the value.
 * On every knob, you can press m or double click to set its value to 0 (and press m again or double click to restore the previous value)
 * When a knob is selected, its value is colored in red, press Esc to deselect it.
-* Press spacebar to activate/deactivate Play.
+* Press space bar to activate/deactivate Play.
 
 ### Improvements to come:
 * Some patchpoints are not active yet (they are indicated by a light grey circle), they will be in a future version
 * As of now, there is no midi integration, there will be an option to use a midi keyboard and a midi clock via the patchbay, and to set midi control change to knobs.
 
 ![Interface of the synth](gui/images/SharmGuiv2.png)
+
+
+[]: https://github.com/skpzk/Sharm/tree/withoutCython
