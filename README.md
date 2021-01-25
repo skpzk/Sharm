@@ -7,7 +7,7 @@ If you experience many underruns, try changing the buffer size in the line 14 of
 
 Clone the repo
 ```console
-$ git clone https://github.com/skpzk/Sharm.git
+$ git clone -b withoutCython --single-branch https://github.com/skpzk/Sharm.git
 ```
 Move to the directory:
 ```console
