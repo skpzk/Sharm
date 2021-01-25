@@ -3,6 +3,8 @@ from PySide6.QtWidgets import QMainWindow, QApplication, QWidget, QHBoxLayout, Q
 from PySide6.QtCore import QEvent
 from PySide6.QtCore import Qt
 
+from os.path import join
+
 import PySide6.QtWidgets as Qtw
 
 from gui.sections import Patchbay, Vcos, Rhythm, Sequencer, Env, Filter, General, Transport
@@ -42,7 +44,8 @@ class Window(QMainWindow):
 		centralWidget.setLayout(layout)
 
 		self.setWindowTitle("Sharm v2")
-		self.setWindowIcon(QtGui.QIcon("gui/images/icon.svg"))
+		path = join("gui", "images", "icon.svg")
+		self.setWindowIcon(QtGui.QIcon(path))
 		# self.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.FramelessWindowHint)
 		self.setFocus()
 
