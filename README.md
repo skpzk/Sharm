@@ -5,7 +5,7 @@ Sharm is an attempt to copy the behaviour of the Moog Shubharmonicon synthesizer
 ### Set up:
 
 Note : As Sharm is written in Python, my pc was not able to run everything fast enough, so the filter and some functions are written in Cython (ie. C extensions for Python, see https://cython.org/). 
-In the future, I may add precompiled wheels for evey distribution. In the meantime, if your computer is fast enough, there is a [https://github.com/skpzk/Sharm/tree/withoutCython][version of Sharm without cython]
+In the future, I may add precompiled wheels for evey distribution. In the meantime, if your computer is fast enough, there is a [version of Sharm without cython](https://github.com/skpzk/Sharm/tree/withoutCython).
 
 Clone the repo
 ```console
