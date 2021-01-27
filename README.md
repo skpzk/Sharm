@@ -61,6 +61,3 @@ Run main.py in your terminal
 * As of now, there is no midi integration, there will be an option to use a midi keyboard and a midi clock via the patchbay, and to set midi control change to knobs.
 
 ![Interface of the synth](gui/images/SharmGuiv2.png)
-
-
-[]: https://github.com/skpzk/Sharm/tree/withoutCython
