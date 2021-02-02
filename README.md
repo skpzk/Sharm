@@ -19,9 +19,13 @@ Create a new virtual environment (use your version of python, it should run at l
 ```console
 $ virtualenv --python=python3.9 venv
 ```
-Activate it
+Activate it (bash:)
 ```console
 $ source venv/bin/activate
+```
+Activate it (Windows cmd:)
+```console
+> venv\Scripts\activate
 ```
 Install the packages into it from the requirements file
 ```console
