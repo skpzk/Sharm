@@ -9,6 +9,8 @@ In the future, I may add precompiled wheels for evey distribution. In the meanti
 
 This applications uses PySide6 (https://pypi.org/project/PySide6/) and thus compatibility is limited by PySide6 (see https://wiki.qt.io/Qt_for_Python). Notably, you must have python >= 3.6 (up to 3.9), and it won't run on python 3.8.0 on windows.
 
+This application was tested on Archlinux, Ubuntu and Windows 10. It has not been tested on macOS.
+
 Clone the repo
 ```console
 $ git clone https://github.com/skpzk/Sharm.git
