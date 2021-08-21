@@ -4,7 +4,7 @@ Sharm is an attempt to copy the behaviour of the Moog Shubharmonicon synthesizer
 
 ### Set up:
 
-Note : As Sharm is written in Python, my pc was not able to run everything fast enough, so the filter and some functions are written in Cython (ie. C extensions for Python, see https://cython.org/). In order to compile cython extensions, you must have c/c++ build tools installed on yout computer (see below).
+Note : As Sharm is written in Python, my pc was not able to run everything fast enough, so the filter and some functions are written in Cython (ie. C extensions for Python, see https://cython.org/). In order to compile cython extensions, you must have c/c++ build tools installed on yout computer (see [below](#compile-cython-extensions)).
 In the future, I may add precompiled wheels for evey distribution. In the meantime, if your computer is fast enough, there is a [version of Sharm without cython](https://github.com/skpzk/Sharm/tree/withoutCython).
 
 This applications uses PySide6 (https://pypi.org/project/PySide6/) and thus compatibility is limited by PySide6 (see https://wiki.qt.io/Qt_for_Python). Notably, you must have python >= 3.6 (up to 3.9), and it won't run on python 3.8.0 on windows.
@@ -66,7 +66,7 @@ Run main.py in your terminal
 Cython requires a C compiler to be present on the system. See https://cython.readthedocs.io/en/latest/src/quickstart/install.html for further instructions.
 
 ### Note on importing sounddevice on windows:
-Sounddevice may conflict with a jack(https://jackaudio.org/) installation and cause python to crash when importing sounddevice. Uninstalling jack fixes the issue.
+Sounddevice may conflict with a jack (https://jackaudio.org/) installation and cause python to crash when importing sounddevice. Uninstalling jack fixes the issue.
 
 ### Future improvements:
 * Some patchpoints are not active yet (they are indicated by a light grey circle), they will be in a future version
